@@ -23,6 +23,7 @@ winamp
 
 * `!mona config -set workingfolder Z:\WH3`
 * run program in debugger!
+* **`jmp esp`**
 * `!mona jmp -n -r esp -cm safeseh=false,rebase=false,aslr=false`
   * find `jmp esp` (`-r` is target register)
   * `-n` skips addresses starting with NULL byte
@@ -32,7 +33,7 @@ winamp
   * `break 0x1a113749`
     * immunity tends to forget breakpoints, so let's keep this
 * we have space above our jmp esp
-* negative jump up! (0xebe0) -> `jmp short -30`
+* **negative jump** up! (0xebe0) -> `jmp short -30`
 
 * `!mona egg -wow64 -winver10`
 
