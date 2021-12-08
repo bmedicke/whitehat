@@ -34,6 +34,10 @@ winamp
     * immunity tends to forget breakpoints, so let's keep this
 * we have space above our jmp esp
 * **negative jump** up! (0xebe0) -> `jmp short -30`
+  * works! but too 30 bytes are not enough space for our jmp back
+  * neither are 127 bytes (max for negative jmp)
+  * let's jump more!
+* replace jmp esp + neg. jmp with: **sub esp, sub esp, jmp esp**
 
 * `!mona egg -wow64 -winver10`
 
