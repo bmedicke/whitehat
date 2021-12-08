@@ -21,7 +21,7 @@ winamp
 
 ---
 
-* `!mona config -set workingfolder Z:\WH3`
+* `!mona config -set workingfolder Z:\WH3` (shared folder)
 * run program in debugger!
 * **`jmp esp`**
 * `!mona jmp -n -r esp -cm safeseh=false,rebase=false,aslr=false`
