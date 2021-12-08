@@ -32,7 +32,7 @@ winamp
   * `break 0x1a113749`
     * immunity tends to forget breakpoints, so let's keep this
 * we have space above our jmp esp
-* negative jump up! (0xebe0)
+* negative jump up! (0xebe0) -> `jmp short -30`
 
 * `!mona egg -wow64 -winver10`
 
