@@ -31,6 +31,9 @@ winamp
 * let's use `0x1a113749` gen_ff.dll
   * `break 0x1a113749`
     * immunity tends to forget breakpoints, so let's keep this
+* we have space above our jmp esp
+* negative jump up! (0xebe0)
+
 * `!mona egg -wow64 -winver10`
 
 from egghunter.txt:
