@@ -1,6 +1,23 @@
+immunity: set options
+
+* ignore exceptions (via: add latest) before pressing `shift-f9` to pass it
+* set proper font (Consolas, regular, 14pt)
+
+---
+
+immunity debugger
+
 * `alt-o` options
 * `alt-c` CPU
 * `alt-l` log (mona output)
+
+---
+
+winamp
+
+* `alt-3` show file info (take a look at the exploit)
+* `str-o` open playlist file
+* `x` play
 
 ---
 
