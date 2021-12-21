@@ -1,3 +1,5 @@
+# lecture 1
+
 immunity: set options
 
 * ignore exceptions (via: add latest) before pressing `shift-f9` to pass it
@@ -71,3 +73,10 @@ aaa;Vpp
 cat eggh.bin| msfvenom -p - -a x86 --platform win
  -e x86/alpha_mixed -f perl
 ```
+
+# lecture 2
+
+* https://amsi.fail/
+* https://rastating.github.io/creating-a-custom-shellcode-encoder/
+* https://medium.com/manomano-tech/a-red-team-operation-leveraging-a-zero-day-vulnerability-in-zoom-80f57fb0822e
+* https://www.golem.de/news/csv-import-luca-app-ermoeglichte-code-injection-bei-excel-2105-156787.html
