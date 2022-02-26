@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from pwn import *
+
 # basic analysis with r2, then switch to gdb gef.
 # info sharedlibrary
 #  /lib64/ld-linux-x86-64.so.2

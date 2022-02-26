@@ -20,7 +20,3 @@ print("pop rdi;ret;\t", pop_rdi_ret)
 print("exit call\t\t", exit_call)
 print("system call\t", system_call)
 print("/bin/sh\t\t", bin_sh)
-
-x = rop.find_gadget(["pop rsi"])
-
-print(x)
