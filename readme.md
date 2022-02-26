@@ -156,3 +156,20 @@ p system
 p exit
 search-pattern '/bin/sh'
 ```
+
+# ret2libc
+
+ROP unter Linux
+
+* Global Offset Table (GOT)
+    * global für das system (shared objects)
+* Procedure Linkage Table (PLT)
+    * konkrete funktionen aus (z.b.) libc reingelinked
+
+```sh
+elf-info
+got
+i proc m
+```
+
+wir brauchen address leak für 3b!
