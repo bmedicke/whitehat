@@ -114,3 +114,8 @@ f.write(payload)
 # = 7FFFF7E11B99
 # x/2i 0x7FFFF7E11B99
 # works!
+
+# easier:
+# ropper --file /usr/lib/x86_64-linux-gnu/libc-2.33.so --search 'push rsp' -I 0x7ffff7dd6000
+# -I defines the imagebase (via: i proc m)
+# neat, but won't help with ASLR (because imagebase changes each time)
