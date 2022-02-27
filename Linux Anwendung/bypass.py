@@ -6,7 +6,7 @@ import binascii
 DEBUG = False
 
 scanf_buffer_size = 128
-# via radare2.
+# via radare2 in sym.copy()
 # add rsp, 0xffffffffffffff80
 # 0x80 is 128
 
