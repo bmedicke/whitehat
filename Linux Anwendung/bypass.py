@@ -106,6 +106,7 @@ print(" (compare with gdb> info proc map)")
 # print('system() offset from libc start:', hex(system_offset)) # 0x49860
 # print('exit_offset() offset from libc start:', hex(exit_offset)) # 0x3f100
 
+# offsets from start of libc:
 bin_sh_offset = 0x198882
 system_offset = 0x49860
 exit_offset = 0x3F100
