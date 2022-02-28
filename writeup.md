@@ -363,11 +363,11 @@ Als nächster Schritt wird Userinput generiert um einen Segmentation
 Fault zu provozieren:
 
 ```sh
-root::kali:Linux Anwendung:# python3 -c "print('a'*30)" | ./bin
+root::kali:Linux Anwendung:# python3 -c "print('a'*15)" | ./bin
 Welcome student! Can you run /bin/sh
-root::kali:Linux Anwendung:# python3 -c "print('a'*300)" | ./bin
+root::kali:Linux Anwendung:# python3 -c "print('a'*150)" | ./bin
 Welcome student! Can you run /bin/sh
-zsh: done                python3 -c "print('a'*300)" |
+zsh: done                python3 -c "print('a'*150)" |
 zsh: segmentation fault  ./bin
 root::kali:Linux Anwendung:#
 ```
