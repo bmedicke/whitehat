@@ -58,9 +58,17 @@ geschickt
 
 ## Die Mail
 
+* das Timing der Mail ist wichtig, zu beachten sind:
+  * realistische Absendeuhrzeit (während Arbeitszeiten der MA15)
+  * Versand bevor der Mitarbeiter das Testergebnis via dem üblichen Weg abruft
+  * nicht zu früh, da die Auswertung von PCR Tests eine gewisse Zeit benötigt
+
 ![image](https://user-images.githubusercontent.com/173962/155928744-f0bd85e5-9193-4bad-a495-c3f152d468da.png)
 
 ## Das Dokument
+
+* beim Anhang handelt es sich um eine `.docm` (`.docx` + Macro) Datei mit integriertem ActiveX Control
+* die ActiveX Control (die Checkbox "Ergebnis anzeigen") ruft ein VBA Macro auf
 
 ![image](https://user-images.githubusercontent.com/173962/155926396-e8ae7855-dd32-498e-ab09-427f536af216.png)
 
