@@ -247,3 +247,5 @@ End Sub
 # Quellen
 
 * https://github.com/bmedicke/REED
+* https://amsi.fail/
+* https://fatrodzianko.com/2020/08/25/getting-rastamouses-amsiscanbufferbypass-to-work-again/
