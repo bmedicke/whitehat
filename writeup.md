@@ -59,7 +59,7 @@ geschickt
 ## Die Mail
 
 * das Timing der Mail ist wichtig, zu beachten sind:
-  * realistische Absendeuhrzeit (während Arbeitszeiten der MA15)
+  * realistische Absendeuhrzeit (während der regulären Arbeitszeiten der MA15)
   * Versand bevor der Mitarbeiter das Testergebnis via dem üblichen Weg abruft
   * nicht zu früh, da die Auswertung von PCR Tests eine gewisse Zeit benötigt
 
