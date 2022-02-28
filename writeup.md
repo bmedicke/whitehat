@@ -58,6 +58,8 @@ geschickt
 
 ## Die Mail
 
+![image](https://user-images.githubusercontent.com/173962/155928448-9975a0ed-4ff5-4d09-8131-ca66c894cf15.png)
+
 ## Das Dokument
 
 ![image](https://user-images.githubusercontent.com/173962/155926396-e8ae7855-dd32-498e-ab09-427f536af216.png)
