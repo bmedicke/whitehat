@@ -377,14 +377,15 @@ analysieren (obwohl man den Offset schon erraten kann):
 
 ```sh
 # I have installed the gef extension for gdb!
+# bash -c "$(curl -fsSL http://gef.blah.cat/sh)"
 gdb bin
 
-gef>  pattern create
+gef➤  pattern create
 [+] Generating a pattern of 1024 bytes (n=8)
 aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaaaataaaaaaauaaaaaaavaaaaaaawaaaaaaaxaaaaaaayaaaaaaazaaaaaabbaaaaaabcaaaaaabdaaaaaabeaaaaaabfaaaaaabgaaaaaabhaaaaaabiaaaaaabjaaaaaabkaaaaaablaaaaaabmaaaaaabnaaaaaaboaaaaaabpaaaaaabqaaaaaabraaaaaabsaaaaaabtaaaaaabuaaaaaabvaaaaaabwaaaaaabxaaaaaabyaaaaaabzaaaaaacbaaaaaaccaaaaaacdaaaaaaceaaaaaacfaaaaaacgaaaaaachaaaaaaciaaaaaacjaaaaaackaaaaaaclaaaaaacmaaaaaacnaaaaaacoaaaaaacpaaaaaacqaaaaaacraaaaaacsaaaaaactaaaaaacuaaaaaacvaaaaaacwaaaaaacxaaaaaacyaaaaaaczaaaaaadbaaaaaadcaaaaaaddaaaaaadeaaaaaadfaaaaaadgaaaaaadhaaaaaadiaaaaaadjaaaaaadkaaaaaadlaaaaaadmaaaaaadnaaaaaadoaaaaaadpaaaaaadqaaaaaadraaaaaadsaaaaaadtaaaaaaduaaaaaadvaaaaaadwaaaaaadxaaaaaadyaaaaaadzaaaaaaebaaaaaaecaaaaaaedaaaaaaeeaaaaaaefaaaaaaegaaaaaaehaaaaaaeiaaaaaaejaaaaaaekaaaaaaelaaaaaaemaaaaaaenaaaaaaeoaaaaaaepaaaaaaeqaaaaaaeraaaaaaesaaaaaaetaaaaaaeuaaaaaaevaaaaaaewaaaaaaexaaaaaaeyaaaaaaezaaaaaafbaaaaaafcaaaaaaf
 [+] Saved as '$_gef0' # copy string to clipboard.
 
-gef> run
+gef➤ run
 # paste string.
 ```
 ![image](https://user-images.githubusercontent.com/173962/155945262-347da465-b8db-4de1-80fb-4cee2d2fe269.png)
@@ -406,8 +407,41 @@ gef> run
 
 * allerdings können wir aufgrund des gesetzten NX-Bits keine Anweisungen am Stack
 ausführen
+* wir müssen also vorhandene Anweisungen nutzen (Gadgets)
 
 ## BOF ohne ASLR
+
+* zuerst wird ASLR deaktiviert:
+  * in einer Shell: `echo 0 | sudo tee /proc/sys/kernel/randomize_va_space`
+  * in gdb gef: `aslr off`
+
+```sh
+gef➤  got
+
+GOT protection: Full RelRO | GOT functions: 3
+
+[0x403fc8] puts@GLIBC_2.2.5  →  0x7ffff7e4be10
+[0x403fd0] fflush@GLIBC_2.2.5  →  0x7ffff7e49f20
+[0x403fd8] __isoc99_scanf@GLIBC_2.7  →  0x7ffff7e2edc0
+```
+
+* die Funktionen in der GOT (Global Offsets Table)
+
+```sh
+gef➤  elf-info
+# abbreviated.
+  [12] .plt                    SHT_PROGBITS   0x401020   0x1020     0x40     0x10 UNKNOWN_FLAG  0x0  0x0     0x10
+  [13] .text                   SHT_PROGBITS   0x401060   0x1060    0x1b5      0x0 UNKNOWN_FLAG  0x0  0x0     0x10
+  [14] .fini                   SHT_PROGBITS   0x401218   0x1218      0xd      0x0 UNKNOWN_FLAG  0x0  0x0      0x4
+  [15] .rodata                 SHT_PROGBITS   0x402000   0x2000     0x35      0x0 ALLOC  0x0  0x0      0x8
+  [16] .eh_frame_hdr           SHT_PROGBITS   0x402038   0x2038     0x44      0x0 ALLOC  0x0  0x0      0x4
+  [17] .eh_frame               SHT_PROGBITS   0x402080   0x2080    0x108      0x0 ALLOC  0x0  0x0      0x8
+  [18] .init_array           SHT_INIT_ARRAY   0x403db0   0x2db0      0x8      0x8 UNKNOWN_FLAG  0x0  0x0      0x8
+  [19] .fini_array           SHT_FINI_ARRAY   0x403db8   0x2db8      0x8      0x8 UNKNOWN_FLAG  0x0  0x0      0x8
+  [20] .dynamic                 SHT_DYNAMIC   0x403dc0   0x2dc0    0x1f0     0x10 UNKNOWN_FLAG  0x6  0x0      0x8
+  [21] .got                    SHT_PROGBITS   0x403fb0   0x2fb0     0x50      0x8 UNKNOWN_FLAG  0x0  0x0      0x8
+# abbreviated.
+```
 
 ## BOF mit ASLR
 
