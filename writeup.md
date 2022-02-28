@@ -478,7 +478,21 @@ Mapped address spaces:
 
 ```
 
-* Position der libc: `0x7ffff7dd6000`
+* Start-Position der libc: `0x7ffff7dd6000`
+* Vergleiche mit: `info sharedlib`
+  * `/lib/x86_64-linux-gnu/libc.so.6` ist ein statischer Link! (siehe `ls -l <path>`)
+
+Da ASLR deaktiviert ist, sind diese Adressen statisch:
+
+```sh
+root::kali:Linux Anwendung:# repeat 5 ldd ./bin | head -n1
+        linux-vdso.so.1 (0x00007ffff7fca000)
+        linux-vdso.so.1 (0x00007ffff7fca000)
+        linux-vdso.so.1 (0x00007ffff7fca000)
+        linux-vdso.so.1 (0x00007ffff7fca000)
+        linux-vdso.so.1 (0x00007ffff7fca000)
+
+```
 
 ## BOF mit ASLR
 
