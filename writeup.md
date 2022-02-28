@@ -834,7 +834,7 @@ p.interactive()
 
 Endlich haben wir eine Shell, die auch mit ASLR funktioniert!
 
-![image](https://user-images.githubusercontent.com/173962/155963139-c0babbe9-8f74-4c42-862a-eca337a88926.png)
+![image](https://user-images.githubusercontent.com/173962/155963747-341060cb-6d5c-43bb-a5ee-9f59ad5272b9.png)
 
 Und natürlich auch ohne ASLR:
 
