@@ -144,7 +144,7 @@ $Patch = [Byte[]] (0x31, 0xC0, 0x05, 0x78, 0x01, 0x19, 0x7F, 0x05, 0xDF, 0xFE, 0
 [System.Runtime.InteropServices.Marshal]::Copy($Patch, 0, $Address, $Patch.Length)
 ```
 
-Dieses Script funktioniert bei aktuellem Patchstand (2022-02-28) noch immer:
+Dieses Script funktioniert bei aktuellem Patchstand (2022-02-27) noch immer:
 
 ![image](https://user-images.githubusercontent.com/173962/155933520-813cb214-af01-4e4f-90d5-cd07ef62120b.png)
 
