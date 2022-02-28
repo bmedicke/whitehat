@@ -211,6 +211,8 @@ End Sub
 nach dem AMSI-Bypass tadellos möglich
 * `-windowstyle hidden` sorg dafür, dass das Powershell Fenster versteckt wird
 
+![image](https://user-images.githubusercontent.com/173962/155935780-def25a53-4f93-40fd-a596-c21289a7d56e.png)
+
 <!-- # Aufgabe 2, Egghunter (2P) -->
 
 <!-- **Aufgabenstellung** -->
