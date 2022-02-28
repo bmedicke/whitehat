@@ -832,9 +832,13 @@ p.sendline(payload2)
 p.interactive()
 ```
 
-Und endlich haben wir eine Shell, die auch mit ASLR funktioniert!
+Endlich haben wir eine Shell, die auch mit ASLR funktioniert!
 
 ![image](https://user-images.githubusercontent.com/173962/155963139-c0babbe9-8f74-4c42-862a-eca337a88926.png)
+
+Und natürlich auch ohne ASLR:
+
+![image](https://user-images.githubusercontent.com/173962/155963537-56693a24-5ff6-4e7e-a8b3-5211687a69e3.png)
 
 # Quellen
 
