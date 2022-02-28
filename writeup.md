@@ -579,7 +579,9 @@ root::kali:Linux Anwendung:#
 ```
 
 * die Adressen stimmen also nicht mehr
-* die Kontrolle via gdb (`aslr on`) bestätigt das
+* die Kontrolle via gdb (`aslr on`) bestätigt das:
+  * Die Positionen von `system()`, `exit()` und `/bin/sh` sind jetzt variabel!
+  * aber `puts()`, `scanf()` und `fflush()` können weiterhin verwendet werden (via GOT/PLT)
 
 ```sh
 root::kali:Linux Anwendung:# repeat 5 ldd ./bin | head -n1                          0 [main]
