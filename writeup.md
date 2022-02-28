@@ -511,7 +511,7 @@ Der grobe Plan für das Payload ist folgender:
 
 ---
 
-Hier ist das finale Payload-Generator für deaktiviertes ASLR:
+Hier ist der finale Payload-Generator für deaktiviertes ASLR:
 
 ```python3
 #!/usr/bin/env python3
