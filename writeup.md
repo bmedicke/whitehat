@@ -49,6 +49,7 @@ Wien, 2022-28-02
 * nach Beobachtung der Executive Mitarbeiter stellt sich heraus, dass
 diese trotz der aktuellen COVID-19 Pandemie weiterhin primär im Büro arbeiten
 und nur selten Home Office machen (vor Ort: Dienstag bis Donnerstag)
+* Laut der Homepage des Betriebes gilt 2G+ (`(geimpft || genesen) && PCR getestet`)
 * die öffentlichen Social Media Postings einer Führungsposition
 (Max Mustermann) deuten darauf hin, dass diese jeden Montag an einer
 Gurgelbox einen PCR-Test durchführt
