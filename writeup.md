@@ -61,7 +61,7 @@ geschickt
 * das Timing der Mail ist wichtig, zu beachten sind:
   * realistische Absendeuhrzeit (während der regulären Arbeitszeiten der MA15)
   * Versand bevor der Mitarbeiter das Testergebnis via dem üblichen Weg abruft
-  * nicht zu früh, da die Auswertung von PCR Tests eine gewisse Zeit benötigt
+  * nicht zu früh schicken, da die Auswertung von PCR Tests eine gewisse Zeit benötigt
 
 ![image](https://user-images.githubusercontent.com/173962/155928744-f0bd85e5-9193-4bad-a495-c3f152d468da.png)
 
@@ -98,7 +98,7 @@ zur Eingabe bei Öffnen des Dokumentes)
   * VBA Limitierungen (Line-Continuation Limit, Escape Eigenheiten, keine Multi-Line Strings)
 
 Zuerst wurden [amsi.fail](https://amsi.fail/) Methoden (regulär und kodiert)
-direkt in einer Powerhsell ausprobiert, welche bei mir allerdings durchwegs
+direkt in einer Powershell ausprobiert, welche bei mir allerdings durchwegs
 erkannt wurden. Zum Beispiel *Matt Graebers Reflection method*:
 
 ![image](https://user-images.githubusercontent.com/173962/155932498-8bd13ac0-6573-4b27-8008-94a491ec954e.png)
@@ -201,15 +201,15 @@ End Sub
   * `&` konkatiniert Strings
   * `vbNewline` wird verwendet um einen Multi-Line-String zu generieren
   (was Powershell erwartet)
-  * `_` ist der Line-Continuation-Char
-  * wo möglich wird `'` anstelle von `"` verwendet
-  * ansonsten `\""` (Backslash für Powershell, Double Double-Quotes für VBA)
+  * `_` ist der Line-Continuation-Char (Achtung, das Limit beträgt 24 Zeilen!)
+  * wo möglich wird `'` anstelle von `"` verwendet um das Powershell Escapen zu vermeiden
+    * ansonsten `\""` (Backslash für Powershell, Double Double-Quotes für VBA)
 * die Variable `code` beinhaltet zusätzlich noch:
   * Nachladen von [powercat](https://github.com/besimorhino/powercat) (Powershell-basiertes netcat)
   * das Starten einer Bind-Shell (`powercat -l -p 4444 -e cmd -v`)
 * das Nachladen und Ausführen von Code aus dem Internet ist 
 nach dem AMSI-Bypass tadellos möglich
-* `-windowstyle hidden` sorg dafür, dass das Powershell Fenster versteckt wird
+* `-windowstyle hidden` sorgt dafür, dass das Powershell Fenster versteckt wird
 
 ![image](https://user-images.githubusercontent.com/173962/155935780-def25a53-4f93-40fd-a596-c21289a7d56e.png)
 
