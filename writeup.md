@@ -494,6 +494,21 @@ root::kali:Linux Anwendung:# repeat 5 ldd ./bin | head -n1
 
 ```
 
+---
+
+Der grobe Plan für das Payload ist folgender:
+
+* `system()` Call mit `/bin/sh` als Parameter
+  * bei 64bit Linux erwartet dieser Call die Adresse des Strings im `rdi` Register
+* gefolgt von einem `exit()`
+* wir benötigen also:
+  * Adresse für `system()`
+  * Adresse für `exit()`
+  * Adresse für den `/bin/sh` String
+  * Adresse eines pop-rdi-ret-Gadgets
+
+![image](https://user-images.githubusercontent.com/173962/155950537-8892cdc0-cd6b-4b15-8384-9b8c746421c4.png)
+
 ## BOF mit ASLR
 
 # Quellen
