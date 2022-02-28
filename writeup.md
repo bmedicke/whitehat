@@ -328,7 +328,7 @@ g
       * `puts()` gibt aus Perfomancegründen nicht immer direkt aus sondern
       verwendet einen I/O buffer, flush zwingt das System diesen zu clearen
     * `copy()` wird aufgerufen:
-      * hier wird eine Variable mit 0x80 (128) Bytes angelegt (buffer Variable)
+      * hier wird eine Variable mit 0x80 (128) Bytes angelegt (`buffer` Variable)
       * in diese wird via `scanf()` User Input geschrieben
         * `%s` ist der Formatstring (ein String)
 
@@ -358,6 +358,19 @@ int sym.copy (int esi, int edx) {
 * Zu beachten ist:
   * die `buffer` Variable hat die Größe 128 Bytes
   * es gibt keinen Check, der den entgegengenommenen Userinput auf diese Länge prüft
+
+Als nächster Schritt wird Userinput generiert um einen Segmentation
+Fault zu provozieren:
+
+```sh
+root::kali:Linux Anwendung:# python3 -c "print('a'*30)" | ./bin
+Welcome student! Can you run /bin/sh
+root::kali:Linux Anwendung:# python3 -c "print('a'*300)" | ./bin
+Welcome student! Can you run /bin/sh
+zsh: done                python3 -c "print('a'*300)" |
+zsh: segmentation fault  ./bin
+root::kali:Linux Anwendung:#
+```
 
 ## BOF ohne ASLR
 
