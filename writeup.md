@@ -548,6 +548,14 @@ f = open("payload", "wb")
 f.write(payload)
 ```
 
+Das generierte Payload (via Radare2):
+
+![image](https://user-images.githubusercontent.com/173962/155951317-8558ba3f-82b6-40f9-9b0b-d949d8025a7c.png)
+
+Und die Ausführung des Exploits:
+
+![image](https://user-images.githubusercontent.com/173962/155951453-0620a445-15c0-46f3-908a-dc18e395ec41.png)
+
 ## BOF mit ASLR
 
 # Quellen
