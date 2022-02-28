@@ -74,7 +74,10 @@ geschickt
 
 * meine ursprüngliche Idee war das Verschlüsseln des AMSI-Bypass Scripts mit
 der Sozialversicherungsnummer des Empfängers (und entsprechender Aufforderung
-zur Eingabe bei Öffnen des Dokumentes), es hat dann aber auch ohne funktioniert
+zur Eingabe bei Öffnen des Dokumentes)
+  * es hat dann aber auch ohne funktioniert
+  * ich gehe davon aus, dass eine zusätzliche Eingabeaufforderung die
+  Erfolgschancen eher reduziert (Aufgrund von Faulheit)
 
 ## Der Payload
 
