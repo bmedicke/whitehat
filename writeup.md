@@ -60,6 +60,8 @@ geschickt
 
 ## Das Dokument
 
+![image](https://user-images.githubusercontent.com/173962/155926396-e8ae7855-dd32-498e-ab09-427f536af216.png)
+
 ## Der Payload
 
 <!-- # Aufgabe 2, Egghunter (2P) -->
