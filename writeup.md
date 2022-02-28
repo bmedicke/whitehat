@@ -266,17 +266,81 @@ einfacheren Namen arbeiten zu können: `cp AAAAAAAA bin`
 Jetzt wurde die Binary mit Radare2 analysiert:
 
 ```sh
-r2 -A bin # load and analyze binary.
+r2 -A bin # load and analyze (aaa) binary.
+
+iq # get minimal infos:
+# arch x86
+# bits 64
+# os linux
+# endian little
+
+ii # list imports:
+# [Imports]
+# nth vaddr      bind   type   lib name
+# ―――――――――――――――――――――――――――――――――――――
+# 1   0x00000000 WEAK   NOTYPE     _ITM_deregisterTMCloneTable
+# 2   0x00401030 GLOBAL FUNC       puts
+# 3   0x00000000 GLOBAL FUNC       __libc_start_main
+# 4   0x00000000 WEAK   NOTYPE     __gmon_start__
+# 5   0x00401040 GLOBAL FUNC       fflush
+# 6   0x00401050 GLOBAL FUNC       __isoc99_scanf
+# 7   0x00000000 WEAK   NOTYPE     _ITM_registerTMCloneTable
+
+afll # list all functions (verbose):
+# address            size  nbbs edges    cc cost          min bound range max bound          calls locals args xref frame name
+# ================== ==== ===== ===== ===== ==== ================== ===== ================== ===== ====== ==== ==== ===== ====
+# 0x0000000000401060   47     1     0     1   16 0x0000000000401060    47 0x000000000040108f     1    0      1    0     8 entry0
+# 0x00000000004010a0   33     4     4     4   14 0x00000000004010a0    33 0x00000000004010c1     0    0      0    1     0 sym.deregister_tm_clones
+# 0x00000000004010d0   51     4     4     4   19 0x00000000004010d0    57 0x0000000000401109     0    0      0    1     0 sym.register_tm_clones
+# 0x0000000000401110   32     3     2     3   17 0x0000000000401110    33 0x0000000000401131     1    0      0    0     8 sym.__do_global_dtors_aux
+# 0x0000000000401140    6     1     1     0    3 0x0000000000401140     6 0x0000000000401146     0    0      0    0     0 entry.init0
+# 0x0000000000401210    5     1     0     1    4 0x0000000000401210     5 0x0000000000401215     0    0      0    1     0 sym.__libc_csu_fini
+# 0x0000000000401218   13     1     0     1    6 0x0000000000401218    13 0x0000000000401225     0    0      0    0     8 sym._fini
+# 0x0000000000401146   35     1     0     1   15 0x0000000000401146    35 0x0000000000401169     1    1      0    1   136 sym.copy
+# 0x0000000000401050    6     1     0     1    3 0x0000000000401050     6 0x0000000000401056     0    0      0    1     0 sym.imp.__isoc99_scanf
+# 0x00000000004011a0  101     4     5     3   43 0x00000000004011a0   101 0x0000000000401205     1    0      3    1    56 sym.__libc_csu_init
+# 0x0000000000401090    5     1     0     1    4 0x0000000000401090     5 0x0000000000401095     0    0      0    0     0 sym._dl_relocate_static_pie
+# 0x0000000000401169   48     1     0     1   20 0x0000000000401169    48 0x0000000000401199     3    0      0    1     8 main
+# 0x0000000000401030    6     1     0     1    3 0x0000000000401030     6 0x0000000000401036     0    0      0    1     0 sym.imp.puts
+# 0x0000000000401040    6     1     0     1    3 0x0000000000401040     6 0x0000000000401046     0    0      0    1     0 sym.imp.fflush
+# 0x0000000000401000   27     3     3     2   13 0x0000000000401000    27 0x000000000040101b     0    0      0    1     8 sym._init
+
 Vpp # enter visual mode in hex view.
+
 g # enter offset mode.
 [offset]> main # jump to main().
 :pdc # (pseudo) disassemble function to C-like syntax.
 # there's a call to copy().
+
 g
 [offset]> sym.copy # jump to copy().
+:pdc
 ```
 
 ![image](https://user-images.githubusercontent.com/173962/155939708-aa7e50d1-4001-47fa-ba7d-ecd27789b9c0.png)
+
+**`:pdc` for copy():**
+
+```C
+int sym.copy (int esi, int edx) {
+    loc_0x401146:
+        // CALL XREF from main @ 0x40118d
+        push  (rbp)
+        rbp = rsp
+        rsp += 0xffffffffffffff80
+        rax = var_80h
+        rsi = rax
+        rdi = rip + 0xeac // "%s"
+        // 0x402008 // const char *format
+        eax = 0
+        sym.imp.__isoc99_scanf  ()
+        // int scanf("%s")
+        no
+        leav          // rsp // rsp
+        re
+         // (break)
+}
+```
 
 ## BOF ohne ASLR
 
