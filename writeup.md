@@ -447,6 +447,39 @@ gef➤  elf-info
 
 * Die Verlinkungen der Funktionen (GOT/PLT/libc)
 
+```sh
+gef➤  info proc map
+process 18416
+Mapped address spaces:
+
+          Start Addr           End Addr       Size     Offset objfile
+            0x400000           0x401000     0x1000        0x0 /root/projects/MCS/MCS3_WH3_seminar_paper/Linux Anwendung/bin
+            0x401000           0x402000     0x1000     0x1000 /root/projects/MCS/MCS3_WH3_seminar_paper/Linux Anwendung/bin
+            0x402000           0x403000     0x1000     0x2000 /root/projects/MCS/MCS3_WH3_seminar_paper/Linux Anwendung/bin
+            0x403000           0x404000     0x1000     0x2000 /root/projects/MCS/MCS3_WH3_seminar_paper/Linux Anwendung/bin
+            0x404000           0x405000     0x1000     0x3000 /root/projects/MCS/MCS3_WH3_seminar_paper/Linux Anwendung/bin
+            0x405000           0x426000    0x21000        0x0 [heap]
+      0x7ffff7dd4000     0x7ffff7dd6000     0x2000        0x0 
+      0x7ffff7dd6000     0x7ffff7dfc000    0x26000        0x0 /usr/lib/x86_64-linux-gnu/libc-2.33.so
+      0x7ffff7dfc000     0x7ffff7f54000   0x158000    0x26000 /usr/lib/x86_64-linux-gnu/libc-2.33.so
+      0x7ffff7f54000     0x7ffff7fa0000    0x4c000   0x17e000 /usr/lib/x86_64-linux-gnu/libc-2.33.so
+      0x7ffff7fa0000     0x7ffff7fa1000     0x1000   0x1ca000 /usr/lib/x86_64-linux-gnu/libc-2.33.so
+      0x7ffff7fa1000     0x7ffff7fa4000     0x3000   0x1ca000 /usr/lib/x86_64-linux-gnu/libc-2.33.so
+      0x7ffff7fa4000     0x7ffff7fa7000     0x3000   0x1cd000 /usr/lib/x86_64-linux-gnu/libc-2.33.so
+      0x7ffff7fa7000     0x7ffff7fb2000     0xb000        0x0 
+      0x7ffff7fc6000     0x7ffff7fca000     0x4000        0x0 [vvar]
+      0x7ffff7fca000     0x7ffff7fcc000     0x2000        0x0 [vdso]
+      0x7ffff7fcc000     0x7ffff7fcd000     0x1000        0x0 /usr/lib/x86_64-linux-gnu/ld-2.33.so
+      0x7ffff7fcd000     0x7ffff7ff1000    0x24000     0x1000 /usr/lib/x86_64-linux-gnu/ld-2.33.so
+      0x7ffff7ff1000     0x7ffff7ffb000     0xa000    0x25000 /usr/lib/x86_64-linux-gnu/ld-2.33.so
+      0x7ffff7ffb000     0x7ffff7ffd000     0x2000    0x2e000 /usr/lib/x86_64-linux-gnu/ld-2.33.so
+      0x7ffff7ffd000     0x7ffff7fff000     0x2000    0x30000 /usr/lib/x86_64-linux-gnu/ld-2.33.so
+      0x7ffffffdd000     0x7ffffffff000    0x22000        0x0 [stack]
+
+```
+
+* Position der libc: `0x7ffff7dd6000`
+
 ## BOF mit ASLR
 
 # Quellen
