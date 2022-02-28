@@ -1,7 +1,7 @@
 #  White Hat - Offensive Security 3, Seminararbeit
 
 GitHub Gist Link des Writeups: https://gist.github.com/bmedicke/8363ded532c2db4615c6418d9b2d25ad
-(besser lesbar als das PDF)
+<br>(besser lesbar als das PDF)
 
 
 * Ausgeführt von: Benjamin Medicke, Bsc.
