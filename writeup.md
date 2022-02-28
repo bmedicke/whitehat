@@ -259,6 +259,25 @@ nach dem AMSI-Bypass tadellos möglich
 
 ## Analyse der Binary
 
+* im ersten Schritt habe ich die Binary `AAAAAAAA` kopiert um mit einem
+einfacheren Namen arbeiten zu können: `cp AAAAAAAA bin`
+* **ab hier arbeite ich mit `bin`!**
+
+Jetzt wurde die Binary mit Radare2 analysiert:
+
+```sh
+r2 -A bin # load and analyze binary.
+Vpp # enter visual mode in hex view.
+g # enter offset mode.
+[offset]> main # jump to main().
+:pdc # (pseudo) disassemble function to C-like syntax.
+# there's a call to copy().
+g
+[offset]> sym.copy # jump to copy().
+```
+
+![image](https://user-images.githubusercontent.com/173962/155939708-aa7e50d1-4001-47fa-ba7d-ecd27789b9c0.png)
+
 ## BOF ohne ASLR
 
 ## BOF mit ASLR
