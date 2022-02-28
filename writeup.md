@@ -445,6 +445,8 @@ gef➤  elf-info
 
 ![image](https://user-images.githubusercontent.com/173962/155948156-404c9d38-bbb4-44bb-9a61-7e6e5e9746c8.png)
 
+* Die Verlinkungen der Funktionen (GOT/PLT/libc)
+
 ## BOF mit ASLR
 
 # Quellen
