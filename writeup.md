@@ -842,6 +842,7 @@ Und natürlich auch ohne ASLR:
 
 # Quellen
 
+* MCS WH3 Slides aus Moodle
 * https://github.com/bmedicke/REED
 * https://amsi.fail/
 * https://rastamouse.me/memory-patching-amsi-bypass/
