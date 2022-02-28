@@ -595,6 +595,21 @@ root::kali:Linux Anwendung:# repeat 5 ldd ./bin | head -n1                      
 * jeder Neustart der Binary führt zu einer neuen Stelle im Memory,
 in welche die statischen Libraries gemapped werden
 
+---
+
+Der neue Plan ist folgender:
+
+* leaken einer Funktionsadresse, die von ASLR beinflusst wird
+(um den Offset berechnen zu können)
+* im gleichen (!) Prozessablauf einlesen eines zweiten Payloads,
+welches die (via dem Offset) korrigierten Adressen für das Poppen der Shell beinhaltet
+
+Das Programm muss also so manipuliert werden, dass es zwei Payloads
+entgegennehmen kann. Zwischen diesen Aufrufen muss der Leak stattfinden.
+
+Dies muss in einem durchgehenden Prozessablauf stattfinden, da beim Erstellen
+eines neuen Prozesses auch ein neuer Offset generiert wird! (siehe `ldd` Code Snippet)
+
 # Quellen
 
 * https://github.com/bmedicke/REED
