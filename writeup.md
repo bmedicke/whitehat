@@ -202,6 +202,8 @@ End Sub
   * `vbNewline` wird verwendet um einen Multi-Line-String zu generieren
   (was Powershell erwartet)
   * `_` ist der Line-Continuation-Char
+  * wo möglich wird `'` anstelle von `"` verwendet
+  * ansonsten `\""` (Backslash für Powershell, Double Double-Quotes für VBA)
 * die Variable `code` beinhaltet zusätzlich noch:
   * Nachladen von [powercat](https://github.com/besimorhino/powercat) (Powershell-basiertes netcat)
   * das Starten einer Bind-Shell (`powercat -l -p 4444 -e cmd -v`)
