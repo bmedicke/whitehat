@@ -267,5 +267,6 @@ nach dem AMSI-Bypass tadellos möglich
 
 * https://github.com/bmedicke/REED
 * https://amsi.fail/
+* https://rastamouse.me/memory-patching-amsi-bypass/
 * https://fatrodzianko.com/2020/08/25/getting-rastamouses-amsiscanbufferbypass-to-work-again/
 * https://github.com/besimorhino/powercat
