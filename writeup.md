@@ -400,7 +400,7 @@ gef> run
 * die `buffer` Variable endet tatsächlich bei 128
 * danach kommt das Backup des Basepointers
 * danach die Adresse, bei der es nach dem `ret` weiter geht
-* wir können also $PC modifizieren
+* wir können also den $PC modifizieren
 
 ![image](https://user-images.githubusercontent.com/173962/155946230-f77448f6-b082-4b04-bae8-7b2abe703fba.png)
 
