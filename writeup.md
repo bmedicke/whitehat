@@ -579,6 +579,7 @@ root::kali:Linux Anwendung:#
 ```
 
 * die Adressen stimmen also nicht mehr
+* die Kontrolle via gdb (`aslr on`) bestätigt das
 
 ```sh
 root::kali:Linux Anwendung:# repeat 5 ldd ./bin | head -n1                          0 [main]
@@ -590,7 +591,7 @@ root::kali:Linux Anwendung:# repeat 5 ldd ./bin | head -n1                      
 ```
 
 * jeder Neustart der Binary führt zu einer neuen Stelle im Memory,
-an welche die statischen Libraries gemapped werden
+in welche die statischen Libraries gemapped werden
 
 # Quellen
 
