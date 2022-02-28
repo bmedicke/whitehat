@@ -840,6 +840,8 @@ Und natürlich auch ohne ASLR:
 
 ![image](https://user-images.githubusercontent.com/173962/155963537-56693a24-5ff6-4e7e-a8b3-5211687a69e3.png)
 
+* ich seh' gerade das `sudo` fürs `tee` hätte ich mir auch sparen können
+
 # Quellen
 
 * MCS WH3 Slides aus Moodle
