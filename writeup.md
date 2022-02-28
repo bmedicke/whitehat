@@ -72,6 +72,10 @@ geschickt
 
 ![image](https://user-images.githubusercontent.com/173962/155926396-e8ae7855-dd32-498e-ab09-427f536af216.png)
 
+* meine ursprüngliche Idee war das Verschlüsseln des AMSI-Bypass Scripts mit
+der Sozialversicherungsnummer des Empfängers (und entsprechender Aufforderung
+zur Eingabe bei Öffnen des Dokumentes), es hat dann aber auch ohne funktioniert
+
 ## Der Payload
 
 <!-- # Aufgabe 2, Egghunter (2P) -->
