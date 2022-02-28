@@ -601,7 +601,7 @@ Der neue Plan ist folgender:
 
 * leaken einer Funktionsadresse, die von ASLR beinflusst wird
 (um den Offset berechnen zu können)
-* im gleichen (!) Prozessablauf einlesen eines zweiten Payloads,
+* im gleichen (!) Prozessablauf: Einlesen eines zweiten Payloads,
 welches die (via dem Offset) korrigierten Adressen für das Poppen der Shell beinhaltet
 
 Das Programm muss also so manipuliert werden, dass es zwei Payloads
