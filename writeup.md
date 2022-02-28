@@ -372,6 +372,29 @@ zsh: segmentation fault  ./bin
 root::kali:Linux Anwendung:#
 ```
 
+Jetzt kann eine De-Bruijn-Folge verwendet werden um den Fehler genauer zu
+analysieren (obwohl man den Offset schon erraten kann):
+
+```sh
+# I have installed the gef extension for gdb!
+gdb bin
+
+gef>  pattern create
+[+] Generating a pattern of 1024 bytes (n=8)
+aaaaaaaabaaaaaaacaaaaaaadaaaaaaaeaaaaaaafaaaaaaagaaaaaaahaaaaaaaiaaaaaaajaaaaaaakaaaaaaalaaaaaaamaaaaaaanaaaaaaaoaaaaaaapaaaaaaaqaaaaaaaraaaaaaasaaaaaaataaaaaaauaaaaaaavaaaaaaawaaaaaaaxaaaaaaayaaaaaaazaaaaaabbaaaaaabcaaaaaabdaaaaaabeaaaaaabfaaaaaabgaaaaaabhaaaaaabiaaaaaabjaaaaaabkaaaaaablaaaaaabmaaaaaabnaaaaaaboaaaaaabpaaaaaabqaaaaaabraaaaaabsaaaaaabtaaaaaabuaaaaaabvaaaaaabwaaaaaabxaaaaaabyaaaaaabzaaaaaacbaaaaaaccaaaaaacdaaaaaaceaaaaaacfaaaaaacgaaaaaachaaaaaaciaaaaaacjaaaaaackaaaaaaclaaaaaacmaaaaaacnaaaaaacoaaaaaacpaaaaaacqaaaaaacraaaaaacsaaaaaactaaaaaacuaaaaaacvaaaaaacwaaaaaacxaaaaaacyaaaaaaczaaaaaadbaaaaaadcaaaaaaddaaaaaadeaaaaaadfaaaaaadgaaaaaadhaaaaaadiaaaaaadjaaaaaadkaaaaaadlaaaaaadmaaaaaadnaaaaaadoaaaaaadpaaaaaadqaaaaaadraaaaaadsaaaaaadtaaaaaaduaaaaaadvaaaaaadwaaaaaadxaaaaaadyaaaaaadzaaaaaaebaaaaaaecaaaaaaedaaaaaaeeaaaaaaefaaaaaaegaaaaaaehaaaaaaeiaaaaaaejaaaaaaekaaaaaaelaaaaaaemaaaaaaenaaaaaaeoaaaaaaepaaaaaaeqaaaaaaeraaaaaaesaaaaaaetaaaaaaeuaaaaaaevaaaaaaewaaaaaaexaaaaaaeyaaaaaaezaaaaaafbaaaaaafcaaaaaaf
+[+] Saved as '$_gef0' # copy string to clipboard.
+
+gef> run
+# paste string.
+```
+![image](https://user-images.githubusercontent.com/173962/155945262-347da465-b8db-4de1-80fb-4cee2d2fe269.png)
+
+* Der Substring `qaaaaaaa` landet im Basepointer
+
+![image](https://user-images.githubusercontent.com/173962/155945557-00601b36-e359-49f3-9b3c-300e2a180b03.png)
+
+* Der Substring `raaaaaaa` würde im $PC landen (produziert SIGSEGV)
+
 ## BOF ohne ASLR
 
 ## BOF mit ASLR
@@ -383,3 +406,4 @@ root::kali:Linux Anwendung:#
 * https://rastamouse.me/memory-patching-amsi-bypass/
 * https://fatrodzianko.com/2020/08/25/getting-rastamouses-amsiscanbufferbypass-to-work-again/
 * https://github.com/besimorhino/powercat
+* https://github.com/hugsy/gef
