@@ -1,12 +1,12 @@
 #  White Hat - Offensive Security 3, Seminararbeit
 
-Ausgeführt von: Benjamin Medicke, Bsc.
+GitHub Gist Link des Writeups: https://gist.github.com/bmedicke/8363ded532c2db4615c6418d9b2d25ad (bessere Formatierung)
 
-Personenkennzeichen: 2010303027
 
-Begutachter: Edlinger Clemens, MSc
-
-Wien, 2022-28-02
+* Ausgeführt von: Benjamin Medicke, Bsc.
+* Personenkennzeichen: 2010303027
+* Begutachter: Edlinger Clemens, MSc
+* Wien, 2022-28-02
 
 ## Inhaltsverzeichnis
 
