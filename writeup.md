@@ -660,6 +660,9 @@ Eingabeaufforderung gestartet (da die `main()` von Vorne beginnt):
 beim Einlesen dieser jedoch
 * `payload1` ist damit fertig
 
+Nach Empfangen des ersten Payloads und leaken der Adresse
+kann das zweite Payload geschickt werden:
+
 ```python3
 # this payload uses the calculated offset to pop a shell:
 payload2 = (
