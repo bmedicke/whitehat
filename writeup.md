@@ -15,11 +15,13 @@ Wien, 2022-28-02
 
 * [Aufgabe 1, Spear Phishing (4P)](#aufgabe-1-spear-phishing-4p)
   * [Szenario](#szenario)
-  * [Mail](#mail)
+  * [Die Mail](#die-mail)
   * [Das Dokument](#das-dokument)
-* [Aufgabe 3b, 64bit ASLR/DEP Bypass (8P)](#aufgabe-3b-64bit-aslrdep-bypass-8p)
-  * [ohne ASLR](#ohne-aslr)
-  * [mit ASLR](#mit-aslr)
+  * [Der Payload](#der-payload)
+* [Aufgabe 3b, 64bit ASLR Bypass (8P)](#aufgabe-3b-64bit-aslr-bypass-8p)
+  * [Analyse der Binary](#analyse-der-binary)
+  * [BOF ohne ASLR](#bof-ohne-aslr)
+  * [BOF mit ASLR](#bof-mit-aslr)
 
 <!-- vim-markdown-toc -->
 
@@ -27,14 +29,18 @@ Wien, 2022-28-02
 
 ## Szenario
 
-## Mail
+## Die Mail
 
 ## Das Dokument
 
+## Der Payload
+
 <!-- # Aufgabe 2, Egghunter (2P) -->
 
-# Aufgabe 3b, 64bit ASLR/DEP Bypass (8P)
+# Aufgabe 3b, 64bit ASLR Bypass (8P)
 
-## ohne ASLR
+## Analyse der Binary
 
-## mit ASLR
+## BOF ohne ASLR
+
+## BOF mit ASLR
