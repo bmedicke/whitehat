@@ -395,6 +395,18 @@ gef> run
 
 * Der Substring `raaaaaaa` würde im $PC landen (produziert SIGSEGV)
 
+![image](https://user-images.githubusercontent.com/173962/155945959-2ec88ec5-ab20-4d53-834b-0a56277ed2e7.png)
+
+* die `buffer` Variable endet tatsächlich bei 128
+* danach kommt das Backup des Basepointers
+* danach die Adresse, bei der es nach dem `ret` weiter geht
+* wir können also $PC modifizieren
+
+![image](https://user-images.githubusercontent.com/173962/155946230-f77448f6-b082-4b04-bae8-7b2abe703fba.png)
+
+* allerdings können wir aufgrund des gesetzten NX-Bits keine Anweisungen am Stack
+ausführen
+
 ## BOF ohne ASLR
 
 ## BOF mit ASLR
