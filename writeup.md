@@ -663,7 +663,7 @@ beim Einlesen dieser jedoch
 ---
 
 Nach Empfangen des ersten Payloads und leaken der Adresse
-kann das zweite Payload geschickt werden:
+kann das zweite Payload geschickt wurden:
 
 ```python3
 # this payload uses the calculated offset to pop a shell:
