@@ -563,6 +563,35 @@ Und die Ausführung des Exploits:
 
 ## BOF mit ASLR
 
+Testen wir nun unser Payload mit aktiviertem ASLR:
+
+```sh
+root::kali:Linux Anwendung:# echo 2 | sudo tee /proc/sys/kernel/randomize_va_space
+2
+root::kali:Linux Anwendung:# cat payload - | ./bin
+Welcome student! Can you run /bin/sh
+ps -p $$
+
+zsh: broken pipe         cat payload - |
+zsh: segmentation fault  ./bin
+Time: 0h:00m:04s
+root::kali:Linux Anwendung:#
+```
+
+* die Adressen stimmen also nicht mehr
+
+```sh
+root::kali:Linux Anwendung:# repeat 5 ldd ./bin | head -n1                          0 [main]
+        linux-vdso.so.1 (0x00007ffc168ea000)
+        linux-vdso.so.1 (0x00007ffc9aade000)
+        linux-vdso.so.1 (0x00007ffff6bc3000)
+        linux-vdso.so.1 (0x00007ffc0374c000)
+        linux-vdso.so.1 (0x00007ffcb0996000)
+```
+
+* jeder Neustart der Binary führt zu einer neuen Stelle im Memory,
+an welche die statischen Libraries gemapped werden
+
 # Quellen
 
 * https://github.com/bmedicke/REED
