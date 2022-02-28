@@ -443,7 +443,7 @@ gef➤  elf-info
 # abbreviated.
 ```
 
-![image](https://user-images.githubusercontent.com/173962/155948057-fd83b276-f3f7-42ae-b22f-488b6ea64cf3.png)
+![image](https://user-images.githubusercontent.com/173962/155948156-404c9d38-bbb4-44bb-9a61-7e6e5e9746c8.png)
 
 ## BOF mit ASLR
 
