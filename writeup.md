@@ -46,6 +46,16 @@ Wien, 2022-28-02
 
 ## Szenario
 
+* nach Beobachtung der Executive Mitarbeiter stellt sich heraus, dass
+diese trotz der aktuellen COVID-19 Pandemie weiterhin primär im Büro arbeiten
+und nur selten Home Office machen (vor Ort: Dienstag bis Donnerstag)
+* die öffentlichen Social Media Postings einer Führungsposition
+(Max Mustermann) deuten darauf hin, dass diese jeden Montag an einer
+Gurgelbox einen PCR-Test durchführt
+* in den frühen Morgenstunden des darauffolgenden Tages wird die folgende
+Mail, die das vermeintliche Testergebnis verspricht, an den Mitarbeiter
+geschickt
+
 ## Die Mail
 
 ## Das Dokument
