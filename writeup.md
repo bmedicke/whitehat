@@ -511,10 +511,10 @@ Der grobe Plan für das Payload ist folgender:
 
 ---
 
+Hier ist das finale Payload-Generator für deaktiviertes ASLR:
+
 ```python3
 #!/usr/bin/env python3
-
-from pwn import *
 
 # gef> p system
 # 0x7ffff7e1f860
