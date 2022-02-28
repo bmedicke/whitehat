@@ -149,8 +149,7 @@ Dieses Script funktioniert bei aktuellem Patchstand (2022-02-28) noch immer:
 ![image](https://user-images.githubusercontent.com/173962/155933520-813cb214-af01-4e4f-90d5-cd07ef62120b.png)
 
 Nach dem Strippen von Kommentaren und Newlines sowie dem doppeltem Escapen
-(ergibt sich das
-folgende VBA Script, was an die Checkbox geh
+(ergibt sich das folgende VBA Script, welches an die Checkbox gehängt wird:
 
 ```vba
 Private Sub CheckBox1_Click()
