@@ -6,7 +6,6 @@ GitHub Gist Link des Writeups: https://gist.github.com/bmedicke/8363ded532c2db46
 
 * Ausgeführt von: Benjamin Medicke, Bsc.
 * Personenkennzeichen: 2010303027
-* Begutachter: Edlinger Clemens, MSc.
 * Wien, 2022-28-02
 
 ## Inhaltsverzeichnis
